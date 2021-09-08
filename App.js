@@ -67,6 +67,7 @@ import { View, Text, ScrollView, SafeAreaView } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import Login from './Components/Login';
+import Salary from './Components/Salary';
 
 const Stack = createStackNavigator();
 
@@ -84,6 +85,16 @@ function App() {
           }}
           name="Login"
           component={Login}
+        />
+        <Stack.Screen
+          options={{
+            headerStyle: {
+              backgroundColor: 'skyblue',
+            },
+            headerTintColor: 'white',
+          }}
+          name="Salary"
+          component={Salary}
         />
       </Stack.Navigator>
     </NavigationContainer>
