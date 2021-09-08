@@ -8,7 +8,7 @@ import {
     Alert
 } from 'react-native';
 
-import { Button,TextInput,Appbar} from 'react-native-paper';
+import { Button,TextInput,Appbar,Title} from 'react-native-paper';
 
 import {NativeModules} from 'react-native';
 
@@ -55,6 +55,7 @@ export default class Login extends Component {
         return (
             
             <View style={styles.container}>
+                <Title style={styles.title}>Admin Login</Title>
                 <View style={styles.inputContainer}>
                     <Image style={styles.inputIcon}
                         source={require('../public/images/user.png')} />
@@ -94,6 +95,16 @@ export default class Login extends Component {
 }
 
 const styles = StyleSheet.create({
+    title:{
+        borderRadius: 30,
+        borderBottomWidth: 1,
+        width: 250,
+        height: 45,
+        marginBottom: 20,
+        marginLeft: 150,
+        flexDirection: 'row',
+        alignItems: 'center'
+    },
     container: {
         flex: 1,
         justifyContent: 'center',
