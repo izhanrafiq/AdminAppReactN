@@ -1,13 +1,15 @@
 import { useNavigation } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
 import { Image,FlatList, SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity, View, Button, ScrollView } from "react-native";
-// import { deleteCustomer, getCustomerById, getCustomers } from "../services/CustomerAPI";
-import { getSalary,getSalaryById,getSalaryBySearch,getSalaryListForEmp,updateSalary,deleteSalary} from "../services/SalaryData";
-import {getEmployeeById} from '../services/EmployeeData';
+import { getSalary,getSalaryById,getSalaryBySearch,getSalaryListForEmp,updateSalary,deleteSalary, getSalaryInit} from "../../services/SalaryData";
+import {getEmployeeById} from '../../services/EmployeeData';
+import SelectDropdown from 'react-native-select-dropdown'
 
-let DATA = [];
+
+
 
 const Item = ({ item, onPress, style,onDelete,onEdit, onSelectMonth}) => (
+  
   <TouchableOpacity onPress={onPress} style={[styles.item, style,{borderRadius:10}]}>
       <View style={{
         flex: 1,
@@ -15,22 +17,13 @@ const Item = ({ item, onPress, style,onDelete,onEdit, onSelectMonth}) => (
         justifyContent: 'center',
         alignItems: 'stretch',
       }}>
+        {/* {console.log("ggggg",item)} */}
         <View style={{flex:8, height: 50, flexDirection: 'row'}} >
             <View style={{flex:7, height: 50}}>
                 <Text style={styles.title}>{getEmployeeById(item.employeeId).name}</Text>
             </View>
             <View style={ {flex: 1,backgroundColor:"blue",height:40,alignContent:"space-around"}} >
-              {/* <TouchableOpacity onPress={()=>{console.log("edit",item.id);
-          onEdit(item.id);
-
-              }}>
-              <Image
-              style={styles.tinyLogo}
-              source={{
-              uri: 'https://training.pyther.com/icons/edit.png?9',
-              }}
-              />
-              </TouchableOpacity> */}
+              
               <Button
               onPress={()=>{console.log("edit",item.id);
           onEdit(item.id);
@@ -43,29 +36,19 @@ const Item = ({ item, onPress, style,onDelete,onEdit, onSelectMonth}) => (
 
 
             <View  style={{flex:1, height: 50}}>
-              {/* <TouchableOpacity onPress={()=>{console.log("delete",item.id);
-          onDelete(item.id);
-              // console.log("ffffffff")
-              // onDelete(item.id)
-              }}>
-            <Image
-            style={styles.tinyLogo}
-            source={{
-              uri: 'https://training.pyther.com/icons/delete.png',
-            }}
-          />
-                </TouchableOpacity> */}
+              
           <Button  onPress={()=>{console.log("delete",item.id);
           onDelete(item.id);
         }} title="X"/>
             </View>
             </View>
         <View style={{flex:2,paddingVertical:5,paddingHorizontal:10,width:250,  height: "auto" ,backgroundColor:'lightblue',display:'flex',flexDirection:'column',borderRadius:10,backgroundColor:'#ddd'}} >
-            <Text style={styles.email}>EmployeeId   : {item.employeeId}</Text>
-            <Text style={styles.phone}>Total-Salary  : {item.basic+item.lta+item.hra+item.variable+item.bonus+item.TDS+item.tax}</Text>
+            <Text style={styles.phone}>Total-Salary : {item.basic+item.lta+item.hra+item.variable+item.bonus+item.TDS+item.tax}</Text>
             <Text style={styles.address}>WorkingDays : {item.workingDaysInMonth}</Text>
-            {/* <Text style={styles.city}>City        : {item.city}</Text> */}
-        </View>
+            <Text style={styles.city}>Month/Year    : {item.monthYear}</Text>
+            <Text style={styles.city}>DateOfEntry    : {item.dateOfEntry}</Text>
+            <Text style={styles.city}>DateOfModify    : {item.dateOf}</Text>
+      </View>
       </View>
   </TouchableOpacity>
 );
@@ -73,20 +56,21 @@ const Item = ({ item, onPress, style,onDelete,onEdit, onSelectMonth}) => (
 const EmployeeSalary = (props) => {
   const [selectedId, setSelectedId] = useState(null);
   const [count, doRender] = useState(0);
-  const [salary,setSalary]=useState([]);
+//   const [salary,setSalary]=useState([]);
+//   const [salaryInit,setSalaryInit] = useState([]);
+  const [salaryList,setSalaryList] = useState([]);
+  const [monthSalary,setMonthSalary] = useState([]);
+  const [monthList,setMonthList] = useState([]);
   const navigation = useNavigation();
   const [fetch,setFetch] = useState(true);
 
-//   const doFetch = async ()=>{
-//     console.log("lllllllllllllllll..........Fetch........")
-//     const data = await getCustomers();
-//     console.log("pppp",data)
-//     setCustomer(data);
   const doFetch = ()=>{
-    console.log("lllllllllllllllll..........Fetch........")
-    const data = getSalaryListForEmp(props.route.params.id);
-    console.log("pppp",data)
-    setSalary(data);
+      const empSalaryList = props.route.params.empSalaryList;
+    console.log("in salaryList :",empSalaryList)
+    setSalaryList(empSalaryList);
+    let tempMonthList = empSalaryList.map((e)=>{return e.monthYear;});
+    console.log("monthlist :",tempMonthList)
+    setMonthList(tempMonthList);
 
   }
   useEffect(()=>{
@@ -96,18 +80,20 @@ const EmployeeSalary = (props) => {
 //     doFetch();
 //   },[])
   const renderItem = ({ item }) => {
+    console.log("in render in single salary //////////////////")
     const backgroundColor = item.id === selectedId ? "lightgrey" : "white";
-
     return (
       <Item
         item={item}
+        // item={check(item)}
         onPress={() => setSelectedId(item.id)}
         onDelete={(id)=> {
             // console.log("gggggggggg",id,)
             // customers = customers.filter((e)=>{return e.id!==id})
             deleteSalary({id});
             doFetch();
-            doRender(count+1)}}
+            doRender(count+1)
+          }}
         onEdit={(id)=>{
           let empsalary = getSalaryById(id);
           // console.log("ttttt",customer)
@@ -120,25 +106,6 @@ const EmployeeSalary = (props) => {
         style={{ backgroundColor }}
         
       />
-    //   <Item
-    //     item={item}
-    //     onPress={() => setSelectedId(item.id)}
-    //     onDelete={async(id)=> {
-    //         // console.log("gggggggggg",id,)
-    //         // customers = customers.filter((e)=>{return e.id!==id})
-    //         await deleteCustomer({id});
-    //         doFetch();
-    //         // console.log("new customers",customers)
-            
-    //         doRender(count+1)}}
-    //     onEdit={async (id)=>{
-    //       let customer = await getCustomerById(id);
-    //       // console.log("ttttt",customer)
-    //       navigation.navigate("AddCustomer",{...customer,isEdit:true,doFetch});
-    //     }}
-    //     style={{ backgroundColor }}
-        
-    //   />
     );
   };
 
@@ -147,9 +114,33 @@ const EmployeeSalary = (props) => {
     <View style={{backgroundColor:'#47474d'}}>
     <View style={{display:'flex',borderBottomLeftRadius:10,borderBottomRightRadius:10,backgroundColor:'#dddddc'}}>
     </View>
+    <View style={{height:50,width:"100%"}}>
+    <SelectDropdown
+	data={monthList}
+	onSelect={(selectedItem, index) => {
+		console.log(selectedItem, index,salaryList[0].monthYear);
+    // console.log(salaryList.filter((item)=>{
+    //   console.log(";;;;;;;;",item.monthYear===selectedItem);
+    //   return item.monthYear===selectedItem;}))
+      setMonthSalary(salaryList.filter((item)=>{
+        console.log(";;;;;;;;",item.monthYear===selectedItem);
+        return item.monthYear===selectedItem;}))
+        console.log(monthSalary)
+
+    doRender(count+1)
+    
+	}}
+  buttonStyle={{backgroundColor:"lightgrey",width:"90%",alignSelf:"center",borderRadius:10}}
+  // buttonTextStyle={{textShadowOffset:"10"}}
+  dropdownStyle={{backgroundColor:"white",borderRadius:10}}
+    defaultButtonText={"Select Month"}
+	buttonTextAfterSelection={(selectedItem, index) => {return selectedItem}}
+	rowTextForSelection={(item, index) => {return item}}
+/>
+    </View>
       <View style={{height:'89%',overflowY:'scroll'}}>
       <FlatList
-        data={salary}
+        data={monthSalary.length ? monthSalary : salaryList}
         renderItem={renderItem}
         keyExtractor={(item) => item.id}
         extraData={selectedId} 

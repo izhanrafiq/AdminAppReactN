@@ -2,12 +2,13 @@ import { useNavigation } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
 import { Image,FlatList, SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity, View, Button, ScrollView } from "react-native";
 // import { deleteCustomer, getCustomerById, getCustomers } from "../services/CustomerAPI";
-import { getSalary,getSalaryById,getSalaryBySearch,getSalaryListForEmp,updateSalary,deleteSalary} from "../services/SalaryData";
-import {getEmployeeById} from '../services/EmployeeData';
+import { getSalary,getSalaryById,getSalaryBySearch,getSalaryListForEmp,updateSalary,deleteSalary, getSalaryInit} from "../../services/SalaryData";
+import {getEmployeeById} from '../../services/EmployeeData';
 
 let DATA = [];
 
 const Item = ({ item, onPress, style,onDelete,onEdit, onSelectMonth}) => (
+  
   <TouchableOpacity onPress={onPress} style={[styles.item, style,{borderRadius:10}]}>
       <View style={{
         flex: 1,
@@ -15,6 +16,7 @@ const Item = ({ item, onPress, style,onDelete,onEdit, onSelectMonth}) => (
         justifyContent: 'center',
         alignItems: 'stretch',
       }}>
+        {/* {console.log("ggggg",item)} */}
         <View style={{flex:8, height: 50, flexDirection: 'row'}} >
             <View style={{flex:7, height: 50}}>
                 <Text style={styles.title}>{getEmployeeById(item.employeeId).name}</Text>
@@ -37,9 +39,9 @@ const Item = ({ item, onPress, style,onDelete,onEdit, onSelectMonth}) => (
         }} title="Edit"/>
             </View>
 
-            <Button onPress={()=>{console.log("select month",item.employeeId);
+            <Button onPress={()=>{console.log("select month for employee id :",item.employeeId);
         onSelectMonth(item.employeeId);
-        }} title="SM" />
+        }} title="SL" />
 
 
             <View  style={{flex:1, height: 50}}>
@@ -62,8 +64,8 @@ const Item = ({ item, onPress, style,onDelete,onEdit, onSelectMonth}) => (
             </View>
         <View style={{flex:2,paddingVertical:5,paddingHorizontal:10,width:250,  height: "auto" ,backgroundColor:'lightblue',display:'flex',flexDirection:'column',borderRadius:10,backgroundColor:'#ddd'}} >
             <Text style={styles.email}>EmployeeId   : {item.employeeId}</Text>
-            <Text style={styles.phone}>Total-Salary  : {item.basic+item.lta+item.hra+item.variable+item.bonus+item.TDS+item.tax}</Text>
-            <Text style={styles.address}>WorkingDays : {item.workingDaysInMonth}</Text>
+            {/* <Text style={styles.phone}>Total-Salary  : {item.basic+item.lta+item.hra+item.variable+item.bonus+item.TDS+item.tax}</Text>
+            <Text style={styles.address}>WorkingDays : {item.workingDaysInMonth}</Text> */}
             {/* <Text style={styles.city}>City        : {item.city}</Text> */}
         </View>
       </View>
@@ -74,6 +76,7 @@ const Salary = () => {
   const [selectedId, setSelectedId] = useState(null);
   const [count, doRender] = useState(0);
   const [salary,setSalary]=useState([]);
+  const [salaryInit,setSalaryInit] = useState([]);
   const navigation = useNavigation();
   const [fetch,setFetch] = useState(true);
 
@@ -84,9 +87,12 @@ const Salary = () => {
 //     setCustomer(data);
   const doFetch = ()=>{
     console.log("lllllllllllllllll..........Fetch........")
-    const data = getSalary();
-    console.log("pppp",data)
-    setSalary(data);
+    const salaryData = getSalary();
+    const salaryInitData = getSalaryInit();
+    console.log("pppp",salaryData)
+    console.log("oooooo",salaryInitData)
+    setSalary(salaryData);
+    setSalaryInit(salaryInitData);
 
   }
   useEffect(()=>{
@@ -96,18 +102,20 @@ const Salary = () => {
 //     doFetch();
 //   },[])
   const renderItem = ({ item }) => {
+    console.log("in render//////////////////")
     const backgroundColor = item.id === selectedId ? "lightgrey" : "white";
-
     return (
       <Item
         item={item}
+        // item={check(item)}
         onPress={() => setSelectedId(item.id)}
         onDelete={(id)=> {
             // console.log("gggggggggg",id,)
             // customers = customers.filter((e)=>{return e.id!==id})
             deleteSalary({id});
             doFetch();
-            doRender(count+1)}}
+            doRender(count+1)
+          }}
         onEdit={(id)=>{
           let empsalary = getSalaryById(id);
           // console.log("ttttt",customer)
@@ -115,7 +123,8 @@ const Salary = () => {
         }}
         onSelectMonth={(empId)=>{
             let empSalaryList = getSalaryListForEmp(empId);
-            console.log("salary list:",empSalaryList);
+            // console.log("salary list:",empSalaryList);
+            navigation.navigate("EmployeeSalary",props={empSalaryList})
         }}
         style={{ backgroundColor }}
         
@@ -149,7 +158,7 @@ const Salary = () => {
     </View>
       <View style={{height:'89%',overflowY:'scroll'}}>
       <FlatList
-        data={salary}
+        data={salaryInit}
         renderItem={renderItem}
         keyExtractor={(item) => item.id}
         extraData={selectedId} 

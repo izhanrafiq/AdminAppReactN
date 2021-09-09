@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Image,FlatList, SafeAreaView, StatusBar, Button,StyleSheet, Text, TouchableHighlight, TouchableOpacity, View } from "react-native";
 import { getEmployees,deleteEmployee,updateEmployee, getEmployeeById } from "../services/EmployeeData";
+import { getSalaryListForEmp } from "../services/SalaryData";
 import EditEmployee from "./EditEmployee";
 
 const Item = ({ item, onPress, style, onDelete, onEdit, onSalary}) => (
@@ -18,7 +19,7 @@ const Item = ({ item, onPress, style, onDelete, onEdit, onSalary}) => (
 
             <View style={ {flex: 1}} >
             <TouchableOpacity onPress={()=>{
-              onSalary(item);
+              onSalary(item.id);
             }}>
             <Image
             style={styles.tinyLogo}
@@ -98,9 +99,12 @@ const EmployeeApp = ({navigation}) => {
 
         }}
 
-        onSalary={(employee)=>{
+        onSalary={(empId)=>{
             //Implement Salary page.....
-            navigation.navigate('EmployeeSalary', employee);
+            console.log("kkkkkk",empId)
+            let empSalaryList = getSalaryListForEmp(empId);
+            console.log("from employeelist :",empSalaryList)
+            navigation.navigate('EmployeeSalary',props={empSalaryList});
   
           }}
 
