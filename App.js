@@ -68,6 +68,10 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import Login from './Components/Login';
 import Salary from './Components/Salary';
+import EmployeeSalary from './Components/EmployeeSalary';
+import EmployeeApp from './Components/EmployeeList'
+
+
 
 const Stack = createStackNavigator();
 
@@ -95,6 +99,26 @@ function App() {
           }}
           name="Salary"
           component={Salary}
+        />
+         <Stack.Screen
+          options={{
+            headerStyle: {
+              backgroundColor: 'skyblue',
+            },
+            headerTintColor: 'white',
+          }}
+          name="Employee"
+          component={EmployeeApp}
+        />
+        <Stack.Screen
+          options={{
+            headerStyle: {
+              backgroundColor: 'skyblue',
+            },
+            headerTintColor: 'white',
+          }}
+          name="EmployeeSalary"
+          component={EmployeeSalary}
         />
       </Stack.Navigator>
     </NavigationContainer>
