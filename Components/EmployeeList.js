@@ -3,7 +3,7 @@ import { Image,FlatList, SafeAreaView, StatusBar, Button,StyleSheet, Text, Touch
 import { getEmployees,deleteEmployee,updateEmployee, getEmployeeById } from "../services/EmployeeData";
 import EditEmployee from "./EditEmployee";
 
-const Item = ({ item, onPress, style, onDelete, onEdit}) => (
+const Item = ({ item, onPress, style, onDelete, onEdit, onSalary}) => (
   <TouchableOpacity onPress={onPress} style={[styles.item, style]}>
       <View style={{
         flex: 1,
@@ -106,7 +106,7 @@ const EmployeeApp = ({navigation}) => {
 
         onSalary={(employee)=>{
             //Implement Salary page.....
-            navigation.navigate('SalaryEmployee', employee);
+            navigation.navigate('EmployeeSalary', employee);
   
           }}
 
