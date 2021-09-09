@@ -124,7 +124,7 @@ const Salary = () => {
         onSelectMonth={(empId)=>{
             let empSalaryList = getSalaryListForEmp(empId);
             // console.log("salary list:",empSalaryList);
-            navigation.navigate("SingleSalary",props={empSalaryList})
+            navigation.navigate("EmployeeSalary",props={empSalaryList})
         }}
         style={{ backgroundColor }}
         

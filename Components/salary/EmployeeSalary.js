@@ -53,12 +53,13 @@ const Item = ({ item, onPress, style,onDelete,onEdit, onSelectMonth}) => (
   </TouchableOpacity>
 );
 
-const SingleSalary = (props) => {
+const EmployeeSalary = (props) => {
   const [selectedId, setSelectedId] = useState(null);
   const [count, doRender] = useState(0);
 //   const [salary,setSalary]=useState([]);
 //   const [salaryInit,setSalaryInit] = useState([]);
   const [salaryList,setSalaryList] = useState([]);
+  const [monthSalary,setMonthSalary] = useState([]);
   const [monthList,setMonthList] = useState([]);
   const navigation = useNavigation();
   const [fetch,setFetch] = useState(true);
@@ -113,28 +114,33 @@ const SingleSalary = (props) => {
     <View style={{backgroundColor:'#47474d'}}>
     <View style={{display:'flex',borderBottomLeftRadius:10,borderBottomRightRadius:10,backgroundColor:'#dddddc'}}>
     </View>
-    <View style={{backgroundColor:"red",height:50,width:"100%"}}>
+    <View style={{height:50,width:"100%"}}>
     <SelectDropdown
 	data={monthList}
 	onSelect={(selectedItem, index) => {
-		console.log(selectedItem, index)
+		console.log(selectedItem, index,salaryList[0].monthYear);
+    // console.log(salaryList.filter((item)=>{
+    //   console.log(";;;;;;;;",item.monthYear===selectedItem);
+    //   return item.monthYear===selectedItem;}))
+      setMonthSalary(salaryList.filter((item)=>{
+        console.log(";;;;;;;;",item.monthYear===selectedItem);
+        return item.monthYear===selectedItem;}))
+        console.log(monthSalary)
+
+    doRender(count+1)
+    
 	}}
+  buttonStyle={{backgroundColor:"lightgrey",width:"90%",alignSelf:"center",borderRadius:10}}
+  // buttonTextStyle={{textShadowOffset:"10"}}
+  dropdownStyle={{backgroundColor:"white",borderRadius:10}}
     defaultButtonText={"Select Month"}
-	buttonTextAfterSelection={(selectedItem, index) => {
-		// text represented after item is selected
-		// if data array is an array of objects then return selectedItem.property to render after item is selected
-		return selectedItem
-	}}
-	rowTextForSelection={(item, index) => {
-		// text represented for each item in dropdown
-		// if data array is an array of objects then return item.property to represent item in dropdown
-		return item
-	}}
+	buttonTextAfterSelection={(selectedItem, index) => {return selectedItem}}
+	rowTextForSelection={(item, index) => {return item}}
 />
     </View>
       <View style={{height:'89%',overflowY:'scroll'}}>
       <FlatList
-        data={salaryList}
+        data={monthSalary.length ? monthSalary : salaryList}
         renderItem={renderItem}
         keyExtractor={(item) => item.id}
         extraData={selectedId} 
@@ -184,4 +190,4 @@ title: {
   },
 });
 
-export default SingleSalary;
+export default EmployeeSalary;
