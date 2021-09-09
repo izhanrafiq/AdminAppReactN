@@ -91,6 +91,11 @@ export const getEmployeeById = (id) => {
 	return employee;
 }
 
+export var addEmployee = (employee)=>{
+    employee.id = Date.now()+'r';
+    employees.push(employee);
+}
+
 export const updateEmployee = (data) => {
     for (let i = 0; i < employees.length; i++) {
         	if(data.id == employees[i].id){
