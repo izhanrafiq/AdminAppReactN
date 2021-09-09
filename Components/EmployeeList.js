@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Image,FlatList, SafeAreaView, StatusBar, Button,StyleSheet, Text, TouchableHighlight, TouchableOpacity, View } from "react-native";
 import { getEmployees,deleteEmployee,updateEmployee, getEmployeeById } from "../services/EmployeeData";
+import EditEmployee from "./EditEmployee";
 
-const Item = ({ item, onPress, style, onDelete, onEdit, onSalary}) => (
+const Item = ({ item, onPress, style, onDelete, onEdit}) => (
   <TouchableOpacity onPress={onPress} style={[styles.item, style]}>
       <View style={{
         flex: 1,
@@ -10,7 +11,7 @@ const Item = ({ item, onPress, style, onDelete, onEdit, onSalary}) => (
         justifyContent: 'center',
         alignItems: 'stretch',
       }}>
-        <View style={{flex:8, height: 50, flexDirection: 'row'}} >
+        <View style={{flex:8, height: 40, flexDirection: 'row'}} >
             <View style={{flex:7, height: 60}}>
                 <Text style={styles.title}>{item.name}</Text>
             </View>
@@ -21,7 +22,9 @@ const Item = ({ item, onPress, style, onDelete, onEdit, onSalary}) => (
             }}>
             <Image
             style={styles.tinyLogo}
-            source={require('../public/images/empsalary.png')}
+            source={{
+              uri: 'https://training.pyther.com/icons/user.png?9',
+            }}
           />
           </TouchableOpacity>
          </View>
@@ -32,7 +35,9 @@ const Item = ({ item, onPress, style, onDelete, onEdit, onSalary}) => (
             }}>
             <Image
             style={styles.tinyLogo}
-            source={require('../public/images/edit.png')}
+            source={{
+              uri: 'https://training.pyther.com/icons/edit.png?9',
+            }}
           />
           </TouchableOpacity>
          </View>
@@ -43,16 +48,18 @@ const Item = ({ item, onPress, style, onDelete, onEdit, onSalary}) => (
               }}>
             <Image
             style={styles.tinyLogo}
-            source={require('../public/images/delete.png')}
+            source={{
+              uri: 'https://training.pyther.com/icons/delete.png',
+            }}
           />
           </TouchableOpacity>
             </View>
 
         </View>
-        <View style={{flex:2,  height: 85}} >
+        <View style={{flex:2,  height: 30}} >
             <Text style={styles.email}>{item.email}</Text>
-            <Text style={styles.address}>{item.address}</Text>
-            <Text style={styles.dateOfBirth}>{item.dateOfBirth}</Text>
+            {/* <Text style={styles.address}>{item.address}</Text>
+            <Text style={styles.dateOfBirth}>{item.dateOfBirth}</Text> */}
 
         </View>
       </View>
@@ -79,7 +86,7 @@ const EmployeeApp = ({navigation}) => {
   }
 
   const renderItem = ({ item }) => {
-    const backgroundColor = item.id === selectedId ? "skyblue" : "violet";
+    const backgroundColor = item.id === selectedId ? "skyblue" : "Powderblue";
 
     return (
       <Item
@@ -92,13 +99,14 @@ const EmployeeApp = ({navigation}) => {
         }}
 
         onEdit={(employee)=>{
+          console.log("Employee....to....edit...", employee);
           navigation.navigate('EditEmployee', employee);
 
         }}
 
         onSalary={(employee)=>{
             //Implement Salary page.....
-            navigation.navigate('EmployeeSalary', employee);
+            navigation.navigate('SalaryEmployee', employee);
   
           }}
 
@@ -117,6 +125,7 @@ const EmployeeApp = ({navigation}) => {
         keyExtractor={(item) => item.id}
         extraData={selectedId}
       />
+
     {/* <Button 
           title="Add Employee"
           onPress={()=>{
@@ -124,11 +133,12 @@ const EmployeeApp = ({navigation}) => {
             navigation.navigate('AddEmployee', { name: "" });
           }}
           ></Button>  */}
+
         <TouchableHighlight style={[styles.buttonContainer, styles.loginButton]} onPress={()=>{
             navigation.navigate('AddEmployee', { name: "" });
           }}>
-                    <Text style={styles.loginText}>Add Employee</Text>
-                </TouchableHighlight>
+              <Text style={styles.loginText}>Add Employee</Text>
+        </TouchableHighlight>
     </SafeAreaView>
   );
 }; 
