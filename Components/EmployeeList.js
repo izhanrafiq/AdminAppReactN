@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Image,FlatList, SafeAreaView, StatusBar, Button,StyleSheet, Text, TouchableHighlight, TouchableOpacity, View } from "react-native";
 import { getEmployees,deleteEmployee,updateEmployee, getEmployeeById } from "../services/EmployeeData";
 
-const Item = ({ item, onPress, style, onDelete, onEdit}) => (
+const Item = ({ item, onPress, style, onDelete, onEdit, onSalary}) => (
   <TouchableOpacity onPress={onPress} style={[styles.item, style]}>
       <View style={{
         flex: 1,
@@ -21,9 +21,7 @@ const Item = ({ item, onPress, style, onDelete, onEdit}) => (
             }}>
             <Image
             style={styles.tinyLogo}
-            source={{
-              uri: 'https://training.pyther.com/icons/user.png?9',
-            }}
+            source={require('../public/images/empsalary.png')}
           />
           </TouchableOpacity>
          </View>
@@ -34,9 +32,7 @@ const Item = ({ item, onPress, style, onDelete, onEdit}) => (
             }}>
             <Image
             style={styles.tinyLogo}
-            source={{
-              uri: 'https://training.pyther.com/icons/edit.png?9',
-            }}
+            source={require('../public/images/edit.png')}
           />
           </TouchableOpacity>
          </View>
@@ -47,9 +43,7 @@ const Item = ({ item, onPress, style, onDelete, onEdit}) => (
               }}>
             <Image
             style={styles.tinyLogo}
-            source={{
-              uri: 'https://training.pyther.com/icons/delete.png',
-            }}
+            source={require('../public/images/delete.png')}
           />
           </TouchableOpacity>
             </View>
@@ -85,7 +79,7 @@ const EmployeeApp = ({navigation}) => {
   }
 
   const renderItem = ({ item }) => {
-    const backgroundColor = item.id === selectedId ? "skyblue" : "Powderblue";
+    const backgroundColor = item.id === selectedId ? "skyblue" : "violet";
 
     return (
       <Item
@@ -104,7 +98,7 @@ const EmployeeApp = ({navigation}) => {
 
         onSalary={(employee)=>{
             //Implement Salary page.....
-            navigation.navigate('SalaryEmployee', employee);
+            navigation.navigate('EmployeeSalary', employee);
   
           }}
 
