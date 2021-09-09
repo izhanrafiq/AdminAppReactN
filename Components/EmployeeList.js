@@ -22,9 +22,7 @@ const Item = ({ item, onPress, style, onDelete, onEdit, onSalary}) => (
             }}>
             <Image
             style={styles.tinyLogo}
-            source={{
-              uri: 'https://training.pyther.com/icons/user.png?9',
-            }}
+            source={require('../public/images/empsalary.png')}
           />
           </TouchableOpacity>
          </View>
@@ -35,9 +33,7 @@ const Item = ({ item, onPress, style, onDelete, onEdit, onSalary}) => (
             }}>
             <Image
             style={styles.tinyLogo}
-            source={{
-              uri: 'https://training.pyther.com/icons/edit.png?9',
-            }}
+            source={require('../public/images/edit.png')}
           />
           </TouchableOpacity>
          </View>
@@ -48,9 +44,7 @@ const Item = ({ item, onPress, style, onDelete, onEdit, onSalary}) => (
               }}>
             <Image
             style={styles.tinyLogo}
-            source={{
-              uri: 'https://training.pyther.com/icons/delete.png',
-            }}
+            source={require('../public/images/delete.png')}
           />
           </TouchableOpacity>
             </View>
@@ -86,7 +80,7 @@ const EmployeeApp = ({navigation}) => {
   }
 
   const renderItem = ({ item }) => {
-    const backgroundColor = item.id === selectedId ? "skyblue" : "Powderblue";
+    const backgroundColor = item.id === selectedId ? "skyblue" : "violet";
 
     return (
       <Item
