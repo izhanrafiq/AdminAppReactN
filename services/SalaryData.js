@@ -58,3 +58,17 @@ export const getSalaryListForEmp = (empId) => {
 	}
 	return empSalaryList;
 }
+
+export const getSalaryInit = ()=>{
+	// console.log("...............")
+	let salaryInit = [];
+	let resSalary = []
+	for (let i = 0; i < salary.length; i++) {
+		if (!(salaryInit.indexOf(salary[i].employeeId) > -1)) {
+			// console.log("kkkkkkkk")
+        	salaryInit.push(salary[i].employeeId);
+			resSalary.push(salary[i])
+		}
+	}
+	return resSalary;
+}

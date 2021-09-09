@@ -67,7 +67,8 @@ import { View, Text, ScrollView, SafeAreaView } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import Login from './Components/Login';
-import Salary from './Components/Salary';
+import Salary from './Components/salary/Salary';
+import SingleSalary from './Components/salary/SingleSalary'
 
 const Stack = createStackNavigator();
 
@@ -95,6 +96,16 @@ function App() {
           }}
           name="Salary"
           component={Salary}
+        />
+        <Stack.Screen
+          options={{
+            headerStyle: {
+              backgroundColor: 'skyblue',
+            },
+            headerTintColor: 'white',
+          }}
+          name="SingleSalary"
+          component={SingleSalary}
         />
       </Stack.Navigator>
     </NavigationContainer>
