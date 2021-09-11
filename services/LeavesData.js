@@ -1,7 +1,9 @@
 let leaves = [
-    {id:"1",employeeId:"1",startDate:"03/02/2020",endDate:"04/02/2020",count:"",year:"",dateOfEntry:"20/04/2020",dateOfModify:"20/03/2020"},
-    {id:"2",employeeId:"2",startDate:"03/03/2020",endDate:"04/03/2020",count:"",year:"",dateOfEntry:"20/05/2020",dateOfModify:"20/04/2020"},
-    {id:"3",employeeId:"3",startDate:"03/04/2020",endDate:"04/04/2020",count:"",year:"",dateOfEntry:"20/06/2020",dateOfModify:"20/05/2020"},
+    {id:"1",employeeId:"1",startDate:"03/02/2020",endDate:"04/02/2020",count:"1",year:"1999",dateOfEntry:"20/04/2020",dateOfModify:"20/03/2020"},
+    {id:"2",employeeId:"2",startDate:"03/03/2020",endDate:"04/03/2020",count:"2",year:"2000",dateOfEntry:"20/05/2020",dateOfModify:"20/04/2020"},
+    {id:"3",employeeId:"3",startDate:"03/05/2020",endDate:"04/08/2020",count:"3",year:"2020",dateOfEntry:"20/06/2020",dateOfModify:"20/05/2020"},
+    {id:"4",employeeId:"2",startDate:"03/06/2020",endDate:"04/07/2020",count:"4",year:"2021",dateOfEntry:"20/06/2020",dateOfModify:"20/05/2020"},
+    {id:"5",employeeId:"2",startDate:"03/07/2020",endDate:"04/09/2020",count:"5",year:"2021",dateOfEntry:"20/06/2020",dateOfModify:"20/05/2020"},
 ]
 
 
@@ -49,3 +51,29 @@ export const getLeavesBySearch = (field,text) => {
 	}
 	return tempEmpLeaves;
 }
+
+
+export const getLeavesListForEmp = (empId) => {
+	let empLeavesList = []
+	for (var i = 0; i < leaves.length; i++) {
+		if(empId == leaves[i].employeeId){
+			empLeavesList.push(leaves[i])
+		}
+	}
+	return empLeavesList;
+}
+
+export const getLeavesInit = ()=>{
+	// console.log("...............")
+	let leavesInit = [];
+	let resLeaves = []
+	for (let i = 0; i < leaves.length; i++) {
+		if (!(leavesInit.indexOf(leaves[i].employeeId) > -1)) {
+			// console.log("kkkkkkkk")
+        	leavesInit.push(leaves[i].employeeId);
+			resLeaves.push(leaves[i])
+		}
+	}
+	return resLeaves;
+}
+

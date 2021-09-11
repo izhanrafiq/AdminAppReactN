@@ -12,19 +12,19 @@ import {
   Button,
   ScrollView,
 } from 'react-native';
-import {
-  getSalary,
-  getSalaryById,
-  getSalaryBySearch,
-  getSalaryListForEmp,
-  updateSalary,
-  deleteSalary,
-  getSalaryInit,
-} from '../../services/SalaryData';
 import {getEmployeeById} from '../../services/EmployeeData';
 import SelectDropdown from 'react-native-select-dropdown';
+import {
+  getLeaves,
+  getLeavesById,
+  deleteLeaves,
+  updateLeaves,
+  getLeavesListForEmp,
+  getLeavesInit,
+  getLeavesBySearch,
+} from '../../services/LeavesData';
 
-const Item = ({item, onPress, style, onDelete, onEdit, onSelectMonth}) => (
+const Item = ({item, onPress, style, onDelete, onEdit}) => (
   <TouchableOpacity
     onPress={onPress}
     style={[styles.item, style, {borderRadius: 10}]}>
@@ -42,7 +42,7 @@ const Item = ({item, onPress, style, onDelete, onEdit, onSelectMonth}) => (
             {getEmployeeById(item.employeeId).name}
           </Text>
         </View>
-        {/* <View style={{flex: 1, height: 40, alignContent: 'space-around'}}> */}
+        <View style={{flex: 1, height: 40, alignContent: 'space-around'}}>
           <Button
             onPress={() => {
               console.log('edit', item.id);
@@ -51,18 +51,10 @@ const Item = ({item, onPress, style, onDelete, onEdit, onSelectMonth}) => (
             color="purple"
             title="Edit"
           />
-        {/* </View> */}
+        </View>
 
-        <Button
-          onPress={() => {
-            console.log('select month', item.employeeId);
-            onSelectMonth(item.employeeId);
-          }}
-          color="purple"
-          title="Pay-Slip"
-        />
 
-        {/* <View style={{flex: 1, height: 50}}> */}
+        <View style={{flex: 1, height: 50}}>
           <Button
             onPress={() => {
               console.log('delete', item.id);
@@ -71,7 +63,7 @@ const Item = ({item, onPress, style, onDelete, onEdit, onSelectMonth}) => (
             color="purple"
             title="X"
           />
-        {/* </View> */}
+        </View>
       </View>
       <View
         style={{
@@ -86,40 +78,33 @@ const Item = ({item, onPress, style, onDelete, onEdit, onSelectMonth}) => (
           borderRadius: 10,
           backgroundColor: '#ddd',
         }}>
-        <Text style={styles.TotalSalary}>
-          Total-Salary   :{' '}
-          {parseInt(item.basic) +
-            parseInt(item.lta )+
-            parseInt(item.hra)+
-            parseInt(item.variable) +
-            parseInt(item.bonus) +
-            parseInt(item.TDS)+
-            parseInt(item.tax)}
-        </Text>
-        <Text style={styles.address}>
-          WorkingDays    : {item.workingDaysInMonth}
-        </Text>
-        <Text style={styles.data}>Month/Year       : {item.monthYear}</Text>
-        <Text style={styles.data}>DateOfEntry      : {item.dateOfEntry}</Text>
-        <Text style={styles.data}>DateOfModify   : {item.dateOf}</Text>
+        <Text style={styles.count}>Count             : {item.count}</Text>
+        <Text style={styles.year}>Year                  : {item.year}</Text>
+        <Text style={styles.date}>DateOfEntry     : {item.dateOfEntry}</Text>
+        <Text style={styles.date}>DateOfModify  : {item.dateOfModify}</Text>
       </View>
     </View>
   </TouchableOpacity>
 );
 
-const EmployeeSalary = props => {
+const EmployeeLeaves = props => {
   const [selectedId, setSelectedId] = useState(null);
   const [count, doRender] = useState(0);
   //   const [salary,setSalary]=useState([]);
   //   const [salaryInit,setSalaryInit] = useState([]);
   const [employeeId, setEmployeeId]=useState('');
-  const [salaryList, setSalaryList] = useState([]);
-  const [monthSalary, setMonthSalary] = useState([]);
-  const [monthList, setMonthList] = useState([]);
+  const [leavesList, setLeavesList] = useState([]);
+  const [yearLeaves, setYearLeaves] = useState([]);
+  const [yearList, setYearList] = useState([]);
   const navigation = useNavigation();
-  const [fetch, setFetch] = useState(true);
+//   const [fetch, setFetch] = useState(true);
+//   const [isFetch,setIsFetch] = useState(props.route.params.isFetch);
 
-  const doFetch = () => {
+//   const fetchedEmpId = props.route.params;
+//   console.log("ooooooooo",fetchedEmpId);
+
+
+const doFetch = () => {
     const fetchedEmpId = props.route.params;
     console.log("ooooooooo",fetchedEmpId);
     if (fetchedEmpId.employeeId) {
@@ -127,17 +112,18 @@ const EmployeeSalary = props => {
     }
     console.log("ooooooooo",employeeId);
 
-    let empSalaryList = getSalaryListForEmp(employeeId ? employeeId : fetchedEmpId.employeeId);
-    console.log('in salaryList :', empSalaryList);
-    setSalaryList(empSalaryList);
-    let tempMonthList = [];
-    empSalaryList.map(e => {
-      if (!tempMonthList.includes(e.monthYear)) {
-        tempMonthList.push(e.monthYear);
+    let empLeavesList = getLeavesListForEmp(employeeId ? employeeId : fetchedEmpId.employeeId);
+    // const empLeavesList = props.route.params.empLeavesList;
+    console.log('in leavesList :', empLeavesList);
+    setLeavesList(empLeavesList);
+    let tempYearList = [];
+    empLeavesList.map(e => {
+      if (!tempYearList.includes(e.year)) {
+        tempYearList.push(e.year);
       }
     });
-    console.log('monthlist :', tempMonthList);
-    setMonthList(tempMonthList);
+    console.log('monthlist :', tempYearList);
+    setYearList(tempYearList);
   };
   useEffect(() => {
     doFetch();
@@ -146,7 +132,7 @@ const EmployeeSalary = props => {
   //     doFetch();
   //   },[])
   const renderItem = ({item}) => {
-    console.log('in render in single salary //////////////////');
+    console.log('in render in single leaves //////////////////');
     const backgroundColor = item.id === selectedId ? 'lightgrey' : 'white';
     return (
       <Item
@@ -154,20 +140,16 @@ const EmployeeSalary = props => {
         // item={check(item)}
         onPress={() => setSelectedId(item.id)}
         onDelete={id => {
-          // console.log("gggggggggg",id,)
+        //   console.log("gggggggggg",id,)
           // customers = customers.filter((e)=>{return e.id!==id})
-          deleteSalary({id});
+          deleteLeaves({id});
           doFetch();
           doRender(count + 1);
         }}
         onEdit={id => {
-          let empSalary = getSalaryById(id);
-          // console.log("ttttt",customer)
-            navigation.navigate("EditSalary",{...empSalary,doFetch});
-        }}
-        onSelectMonth={empId => {
-          let empSalaryList = getSalaryListForEmp(empId);
-          console.log('salary list:', empSalaryList);
+          let empLeaves = getLeavesById(id);
+          console.log("ttttt",empLeaves);
+            navigation.navigate("EditLeaves",{...empLeaves,doFetch});
         }}
         style={{backgroundColor}}
       />
@@ -185,18 +167,18 @@ const EmployeeSalary = props => {
             backgroundColor: '#dddddc',
           }}></View>
         <View style={{height: 50, width: '50%',display:"flex",flexDirection:"row",marginVertical:10,justifyContent:"space-between"}}>
-          <View style={{width:"90%",marginLeft:10}} >
+          <View style={{width:"90%",marginLeft:10}}>
           <SelectDropdown
-            data={monthList}
+            data={yearList}
             onSelect={(selectedItem, index) => {
-              console.log(selectedItem, index, salaryList[0].monthYear);
-              setMonthSalary(
-                salaryList.filter(item => {
-                  console.log(';;;;;;;;', item.monthYear === selectedItem);
-                  return item.monthYear === selectedItem;
+              console.log(selectedItem, index, leavesList[0].year);
+              setYearLeaves(
+                leavesList.filter(item => {
+                  console.log(';;;;;;;;', item.year === selectedItem);
+                  return item.year === selectedItem;
                 }),
               );
-              console.log(monthSalary);
+              console.log(yearLeaves);
 
               doRender(count + 1);
             }}
@@ -208,7 +190,7 @@ const EmployeeSalary = props => {
             }}
             buttonTextStyle={{color:"purple"}}
             dropdownStyle={{backgroundColor: 'white', borderRadius: 10}}
-            defaultButtonText={'Select Month'}
+            defaultButtonText={'Select Year'}
             buttonTextAfterSelection={(selectedItem, index) => {
               return selectedItem;
             }}
@@ -220,13 +202,12 @@ const EmployeeSalary = props => {
           <View style={{backgroundColor:"skyblue",width:"90%",justifyContent:"center",marginLeft:10,borderRadius:10}} >
                 <Button color="purple" onPress={()=>{
                     console.log("employeeId......... ",employeeId);
-                    navigation.navigate('AddSalary',{employeeId:employeeId,doFetch,setEmployeeId})}} title="Add Salary" />
+                    navigation.navigate('AddLeave',{employeeId:employeeId,doFetch,setEmployeeId})}} title="Add Leave" />
             </View>
-
         </View>
         <View style={{height: '89%', overflowY: 'scroll'}}>
           <FlatList
-            data={monthSalary.length ? monthSalary : salaryList}
+            data={yearLeaves.length ? yearLeaves : leavesList}
             renderItem={renderItem}
             keyExtractor={item => item.id}
             extraData={selectedId}
@@ -256,16 +237,16 @@ const styles = StyleSheet.create({
   email: {
     fontSize: 20,
   },
-  TotalSalary: {
+  count: {
     fontSize: 18,
-    color:"purple"
+    color: 'purple',
   },
-  address: {
+  year: {
     fontSize: 16,
     color: 'purple',
     //   backgroundColor:'lightgrey'
   },
-  data: {
+  date: {
     fontSize: 16,
     color: 'purple',
     //   backgroundColor:'lightgrey'
@@ -276,4 +257,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default EmployeeSalary;
+export default EmployeeLeaves;

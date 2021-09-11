@@ -1,0 +1,156 @@
+import React, { Component,useState } from 'react';
+import { StyleSheet, Text, View, TextInput, Button, TouchableHighlight, Image, Alert } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
+import { updateLeaves } from '../../services/LeavesData';
+
+const EditLeaves = (props) => {
+    // console.log("parameters...",props);
+    const [id, onChangeId] = React.useState(props.route.params.id);
+    const [employeeId, onChangeEmployeeId] = React.useState(props.route.params.employeeId);
+    const [count, onChangeCount] = React.useState(props.route.params.count);
+    const [year, onChangeYear] = React.useState(props.route.params.year);
+    const [startDate, onChangeStartDate] = React.useState(props.route.params.startDate);
+    const [endDate, onChangeEndDate] = React.useState(props.route.params.endDate);
+    const [dateOfEntry, onChangeDateOfEntry] = React.useState(props.route.params.dateOfEntry);
+    const [dateOfModify, onChangeDateOfModify] = React.useState(props.route.params.dateOfModify);
+
+    const [value, onChangeText] = React.useState('9');
+
+    // console.log("in edit leave :",props.route.params.doFetch);
+    const doFetch = props.route.params.doFetch;
+
+    let editLeaves = () => {
+        // const isFetch = !(props.route.params.isFetch);
+        let employeeLeave={
+            id,employeeId,count,year,startDate,endDate,dateOfEntry,dateOfModify
+        };
+        console.log("New values for employeeLeave... ",employeeLeave);
+    //    console.log("employees before... ",employees);
+        updateLeaves(employeeLeave);
+        doFetch();
+        props.navigation.navigate('EmployeeLeaves',{});
+    }
+
+        return (
+            // <ScrollView>
+            <View style={styles.container}>
+                {/* <View style={styles.inputContainer}>
+                    <TextInput style={styles.inputs}
+                        placeholder="EmployeeId"
+                        underlineColorAndroid='transparent'
+                        value={employeeId}
+                        clearButtonMode="always"
+                        onChangeText={onChangeEmployeeId} />
+                </View> */}
+                <View style={styles.inputContainer}>
+                    <TextInput style={styles.inputs}
+                        placeholder="Count"
+                        underlineColorAndroid='transparent'
+                        value={count}
+                        clearButtonMode="always"
+                        onChangeText={onChangeCount} />
+                </View>
+                <View style={styles.inputContainer}>
+                    <TextInput style={styles.inputs}
+                        placeholder="Year"
+                        underlineColorAndroid='transparent'
+                        value={year}
+                        clearButtonMode="always"
+                        onChangeText={onChangeYear} />
+                </View>
+                <View style={styles.inputContainer}>
+                    <TextInput style={styles.inputs}
+                        placeholder="startDate"
+                        underlineColorAndroid='transparent'
+                        value={startDate}
+                        clearButtonMode="always"
+                        onChangeText={onChangeStartDate} />
+                </View>
+                <View style={styles.inputContainer}>
+                    <TextInput style={styles.inputs}
+                        placeholder="endDate"
+                        underlineColorAndroid='transparent'
+                        value={endDate}
+                        clearButtonMode="always"
+                        onChangeText={onChangeEndDate} />
+                </View>
+                <View style={styles.inputContainer}>
+                    <TextInput style={styles.inputs}
+                        placeholder="dateOfEntry"
+                        underlineColorAndroid='transparent'
+                        value={dateOfEntry}
+                        clearButtonMode="always"
+                        onChangeText={onChangeDateOfEntry} />
+                </View>
+                <View style={styles.inputContainer}>
+                    <TextInput style={styles.inputs}
+                        placeholder="dateOfModify"
+                        underlineColorAndroid='transparent'
+                        value={dateOfModify}
+                        clearButtonMode="always"
+                        onChangeText={onChangeDateOfModify} />
+                </View>
+
+                <View style={{backgroundColor:"purple",height:45,borderRadius:35,}}>
+                <TouchableHighlight style={[styles.buttonContainer, styles.loginButton]} onPress={() => editLeaves()}>
+                    <Text style={styles.loginText}>Update Leave</Text>
+                </TouchableHighlight>
+                </View>
+            </View>
+            // </ScrollView>
+        );
+}
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        alignItems: 'center',
+        display:"flex",
+        justifyContent:"center",
+        backgroundColor: 'rgb(174, 135, 196)',
+        // backgroundColor: '#DCDCDC',
+    },
+    inputContainer: {
+        borderBottomColor: '#F5FCFF',
+        backgroundColor: '#FFFFFF',
+        borderRadius: 30,
+        borderBottomWidth: 1,
+        width: 250,
+        height: 45,
+        marginBottom: 20,
+        flexDirection: 'row',
+        alignItems: 'center'
+    },
+    inputs: {
+        height: 45,
+        marginLeft: 16,
+        borderBottomColor: '#FFFFFF',
+        flex: 1,
+    },
+    inputIcon: {
+        width: 30,
+        height: 30,
+        marginLeft: 15,
+        justifyContent: 'center'
+    },
+    buttonContainer: {
+        height: 45,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginBottom: 20,
+        width: 250,
+        borderRadius: 30,
+    },
+    loginButton: {
+
+    },
+    loginText: {
+        color: 'white',
+        fontSize: 18,
+        fontWeight:"bold"
+        
+    }
+});
+
+export default EditLeaves;

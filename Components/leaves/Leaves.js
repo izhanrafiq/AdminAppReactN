@@ -12,21 +12,20 @@ import {
   Button,
   ScrollView,
 } from 'react-native';
-// import { deleteCustomer, getCustomerById, getCustomers } from "../services/CustomerAPI";
-import {
-  getSalary,
-  getSalaryById,
-  getSalaryBySearch,
-  getSalaryListForEmp,
-  updateSalary,
-  deleteSalary,
-  getSalaryInit,
-} from '../../services/SalaryData';
 import {getEmployeeById} from '../../services/EmployeeData';
+import {
+  getLeaves,
+  getLeavesById,
+  deleteLeaves,
+  updateLeaves,
+  getLeavesListForEmp,
+  getLeavesInit,
+  getLeavesBySearch,
+} from '../../services/LeavesData';
 
 let DATA = [];
 
-const Item = ({item, onPress, style, onDelete, onEdit, onSelectMonth}) => (
+const Item = ({item, onPress, style, onDelete, onEdit, onSelectLeave}) => (
   <TouchableOpacity
     onPress={onPress}
     style={[styles.item, style, {borderRadius: 10}]}>
@@ -64,11 +63,11 @@ const Item = ({item, onPress, style, onDelete, onEdit, onSelectMonth}) => (
 
         <Button
           onPress={() => {
-            console.log('select month for employee id :', item.employeeId);
-            onSelectMonth(item.employeeId);
+            console.log('select leave for employee id :', item.employeeId);
+            onSelectLeave(item.employeeId);
           }}
           color="purple"
-          title="Salary-List"
+          title="Leaves-List"
         />
 
         <View style={{flex: 1, height: 50}}>
@@ -116,33 +115,28 @@ const Item = ({item, onPress, style, onDelete, onEdit, onSelectMonth}) => (
   </TouchableOpacity>
 );
 
-const Salary = () => {
+const Leaves = () => {
   const [selectedId, setSelectedId] = useState(null);
   const [count, doRender] = useState(0);
-  const [salary, setSalary] = useState([]);
-  const [salaryInit, setSalaryInit] = useState([]);
+  const [leaves, setLeaves] = useState([]);
+  const [leavesInit, setLeavesInit] = useState([]);
   const navigation = useNavigation();
   const [fetch, setFetch] = useState(true);
 
-  //   const doFetch = async ()=>{
-  //     console.log("lllllllllllllllll..........Fetch........")
-  //     const data = await getCustomers();
-  //     console.log("pppp",data)
-  //     setCustomer(data);
-  const doFetch = () => {
+  const doFetchLeaves = () => {
     console.log('lllllllllllllllll..........Fetch........');
-    const salaryData = getSalary();
-    const salaryInitData = getSalaryInit();
-    // console.log('pppp', salaryData);
-    // console.log('oooooo', salaryInitData);
-    setSalary(salaryData);
-    setSalaryInit(salaryInitData);
+    const leavesData = getLeaves();
+    const leavesInitData = getLeavesInit();
+    // console.log('pppp', leavesData);
+    // console.log('oooooo', leavesInitData);
+    setLeaves(leavesData);
+    setLeavesInit(leavesInitData);
   };
   useEffect(() => {
-    doFetch();
+    doFetchLeaves();
   }, []);
   //   useEffect(async ()=>{
-  //     doFetch();
+  //     doFetchLeaves();
   //   },[])
   const renderItem = ({item}) => {
     console.log('in render//////////////////');
@@ -155,19 +149,21 @@ const Salary = () => {
         onDelete={id => {
           // console.log("gggggggggg",id,)
           // customers = customers.filter((e)=>{return e.id!==id})
-          deleteSalary({id});
-          doFetch();
+          deleteLeaves({id});
+          doFetchLeaves();
           doRender(count + 1);
         }}
         onEdit={id => {
-          let empsalary = getSalaryById(id);
+          let empsalary = getLeavesById(id);
           // console.log("ttttt",customer)
-          //   navigation.navigate("AddCustomer",{...customer,isEdit:true,doFetch});
+          //   navigation.navigate("AddCustomer",{...customer,isEdit:true,doFetchLeaves});
         }}
-        onSelectMonth={empId => {
-          // let empSalaryList = getSalaryListForEmp(empId);
-          // console.log("salary list:",empSalaryList);
-          navigation.navigate('EmployeeSalary', (props = {employeeId:empId}));
+        onSelectLeave={empId => {
+        //   let empLeavesList = getLeavesListForEmp(empId);
+        //   // console.log("salary list:",empLeavesList);
+        //   navigation.navigate('EmployeeLeaves', (props = {empLeavesList}));
+          // console.log("salary list:",empLeavesList);
+          navigation.navigate('EmployeeLeaves', (props = {employeeId:empId}));
         }}
         style={{backgroundColor}}
       />
@@ -178,14 +174,14 @@ const Salary = () => {
       //         // console.log("gggggggggg",id,)
       //         // customers = customers.filter((e)=>{return e.id!==id})
       //         await deleteCustomer({id});
-      //         doFetch();
+      //         doFetchLeaves();
       //         // console.log("new customers",customers)
 
       //         doRender(count+1)}}
       //     onEdit={async (id)=>{
       //       let customer = await getCustomerById(id);
       //       // console.log("ttttt",customer)
-      //       navigation.navigate("AddCustomer",{...customer,isEdit:true,doFetch});
+      //       navigation.navigate("AddCustomer",{...customer,isEdit:true,doFetchLeaves});
       //     }}
       //     style={{ backgroundColor }}
 
@@ -205,7 +201,7 @@ const Salary = () => {
           }}></View>
         <View style={{height: '89%', overflowY: 'scroll'}}>
           <FlatList
-            data={salaryInit}
+            data={leavesInit}
             renderItem={renderItem}
             keyExtractor={item => item.id}
             extraData={selectedId}
@@ -234,25 +230,26 @@ const styles = StyleSheet.create({
   },
   employeeId: {
     fontSize: 18,
-    color:"purple"
+    color: 'purple',
   },
-  phone: {
-    fontSize: 18,
-  },
-  address: {
-    fontSize: 16,
-    color: 'blue',
-    //   backgroundColor:'lightgrey'
-  },
-  city: {
-    fontSize: 16,
-    color: 'green',
-    //   backgroundColor:'lightgrey'
-  },
+  //   phone: {
+  //     fontSize: 18,
+
+  //   },
+  //   address:{
+  //       fontSize:16,
+  //       color:'blue',
+  //     //   backgroundColor:'lightgrey'
+  //   },
+  //   city:{
+  //       fontSize:16,
+  //       color:'green',
+  //     //   backgroundColor:'lightgrey'
+  //   },
   tinyLogo: {
     width: 30,
     height: 30,
   },
 });
 
-export default Salary;
+export default Leaves;
