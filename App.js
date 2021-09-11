@@ -14,6 +14,7 @@ import EditLeaves from './Components/leaves/EditLeaves';
 import AddLeave from './Components/leaves/AddLeaves';
 import EditSalary from './Components/salary/EditSalary';
 import AddSalary from './Components/salary/AddSalary';
+import SalarySlip from './Components/SalarySlip';
 
 const Stack = createStackNavigator();
 
@@ -41,7 +42,7 @@ function App() {
           name="Salary"
           component={Salary}
         />
-         <Stack.Screen
+        <Stack.Screen
           options={{
             headerStyle: {
               backgroundColor: 'purple',
@@ -51,7 +52,7 @@ function App() {
           name="Employee"
           component={EmployeeApp}
         />
-         <Stack.Screen
+        <Stack.Screen
           options={{
             headerStyle: {
               backgroundColor: 'purple',
@@ -61,7 +62,7 @@ function App() {
           name="EditEmployee"
           component={EditEmployee}
         />
-         <Stack.Screen
+        <Stack.Screen
           options={{
             headerStyle: {
               backgroundColor: 'purple',
@@ -71,7 +72,7 @@ function App() {
           name="EditLeaves"
           component={EditLeaves}
         />
-         <Stack.Screen
+        <Stack.Screen
           options={{
             headerStyle: {
               backgroundColor: 'purple',
@@ -81,7 +82,7 @@ function App() {
           name="EditSalary"
           component={EditSalary}
         />
-         <Stack.Screen
+        <Stack.Screen
           options={{
             headerStyle: {
               backgroundColor: 'purple',
@@ -91,7 +92,7 @@ function App() {
           name="AddLeave"
           component={AddLeave}
         />
-         <Stack.Screen
+        <Stack.Screen
           options={{
             headerStyle: {
               backgroundColor: 'purple',
@@ -130,6 +131,16 @@ function App() {
           }}
           name="EmployeeLeaves"
           component={EmployeeLeaves}
+        />
+        <Stack.Screen
+          options={{
+            headerStyle: {
+              backgroundColor: 'purple',
+            },
+            headerTintColor: 'white',
+          }}
+          name="SalarySlip"
+          component={SalarySlip}
         />
       </Stack.Navigator>
     </NavigationContainer>

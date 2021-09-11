@@ -12,7 +12,7 @@ import FileViewer from 'react-native-file-viewer';
 import { getSalaryById } from '../services/SalaryData';
 import { getEmployeeById, getSalaryByEmployeeId } from '../services/Employee-gql';
 
-
+import { useNavigation } from '@react-navigation/native';
 
 
 
@@ -20,18 +20,21 @@ import { getEmployeeById, getSalaryByEmployeeId } from '../services/Employee-gql
 const SalarySlip = ({ navigation }) => {
     const [empsalary, setEmpsalary] = useState([]);
     const [empname, setEmpname] = useState([]);
-    loadEmpSalary = async () => {
-        let list = await getSalaryByEmployeeId('1');
+    const nav = useNavigation()
+    loadEmpSalary = async (id) => {
+        let list = await getSalaryByEmployeeId(id);
         setEmpsalary(list)
     }
-    loadEmpName = async () => {
-        let ename = await getEmployeeById('1');
+    loadEmpName = async (id) => {
+        let ename = await getEmployeeById(id);
         setEmpname(ename)
     }
     useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
-            loadEmpSalary();
-            loadEmpName();
+            console.log("props", props.employeeId)
+            const id = props.employeeId
+            loadEmpSalary(id);
+            loadEmpName(id);
         });
         return unsubscribe;
     }, [navigation]);
@@ -129,6 +132,12 @@ const SalarySlip = ({ navigation }) => {
                 
                 
                                             </tr>
+                                            <tr>
+                                                <th scope="row">LTA</th>
+                                                <td>${empsalary[0].lta}</td>
+                
+                
+                                            </tr>
                                         
                 
                 
@@ -170,7 +179,7 @@ const SalarySlip = ({ navigation }) => {
     return (
         <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', alignSelf: 'center' }}>
             <TouchableHighlight onPress={printpdf}>
-                <Text style={{ color: 'blue' }}>Salary pay slip of employee</Text>
+                <Text style={{ color: 'blue' }}>Ciick here to generate payslip for the employee</Text>
             </TouchableHighlight>
         </View>
     );
