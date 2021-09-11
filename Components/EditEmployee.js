@@ -29,7 +29,7 @@ const EditEmployee = (props) => {
         updateEmployee(employee);
         // console.log("========================",);
         // console.log("employees after... ",employees);
-        props.navigation.navigate('EmployeeList', {});
+        props.navigation.navigate('Employee', {});
     }
 
         return (

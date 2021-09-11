@@ -22,7 +22,7 @@ const Item = ({ item, onPress, style,onDelete,onEdit, onSelectMonth}) => (
             <View style={{flex:7, height: 50}}>
                 <Text style={styles.title}>{getEmployeeById(item.employeeId).name}</Text>
             </View>
-            <View style={ {flex: 1,backgroundColor:"blue",height:40,alignContent:"space-around"}} >
+            <View style={ {flex: 1,height:40,alignContent:"space-around"}} >
               
               <Button
               onPress={()=>{console.log("edit",item.id);
@@ -32,7 +32,7 @@ const Item = ({ item, onPress, style,onDelete,onEdit, onSelectMonth}) => (
 
             <Button onPress={()=>{console.log("select month",item.employeeId);
         onSelectMonth(item.employeeId);
-        }} title="SM" />
+        }} title="Pay-Slip" />
 
 
             <View  style={{flex:1, height: 50}}>
@@ -119,9 +119,6 @@ const EmployeeSalary = (props) => {
 	data={monthList}
 	onSelect={(selectedItem, index) => {
 		console.log(selectedItem, index,salaryList[0].monthYear);
-    // console.log(salaryList.filter((item)=>{
-    //   console.log(";;;;;;;;",item.monthYear===selectedItem);
-    //   return item.monthYear===selectedItem;}))
       setMonthSalary(salaryList.filter((item)=>{
         console.log(";;;;;;;;",item.monthYear===selectedItem);
         return item.monthYear===selectedItem;}))
