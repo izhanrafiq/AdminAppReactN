@@ -10,6 +10,12 @@ import Salary from './Components/salary/Salary';
 import EmployeeSalary from './Components/salary/EmployeeSalary';
 import EmployeeApp from './Components/EmployeeList';
 import EditEmployee from './Components/EditEmployee';
+import Leaves from './Components/leaves/Leaves';
+import EmployeeLeaves from './Components/leaves/EmployeeLeaves';
+import EditLeaves from './Components/leaves/EditLeaves';
+import AddLeave from './Components/leaves/AddLeaves';
+import EditSalary from './Components/salary/EditSalary';
+import AddSalary from './Components/salary/AddSalary';
 
 const Stack = createStackNavigator();
 
@@ -58,6 +64,46 @@ function App() {
           name="EditEmployee"
           component={EditEmployee}
         />
+         <Stack.Screen
+          options={{
+            headerStyle: {
+              backgroundColor: 'purple',
+            },
+            headerTintColor: 'white',
+          }}
+          name="EditLeaves"
+          component={EditLeaves}
+        />
+         <Stack.Screen
+          options={{
+            headerStyle: {
+              backgroundColor: 'purple',
+            },
+            headerTintColor: 'white',
+          }}
+          name="EditSalary"
+          component={EditSalary}
+        />
+         <Stack.Screen
+          options={{
+            headerStyle: {
+              backgroundColor: 'purple',
+            },
+            headerTintColor: 'white',
+          }}
+          name="AddLeave"
+          component={AddLeave}
+        />
+         <Stack.Screen
+          options={{
+            headerStyle: {
+              backgroundColor: 'purple',
+            },
+            headerTintColor: 'white',
+          }}
+          name="AddSalary"
+          component={AddSalary}
+        />
         <Stack.Screen
           options={{
             headerStyle: {
@@ -67,6 +113,26 @@ function App() {
           }}
           name="EmployeeSalary"
           component={EmployeeSalary}
+        />
+        <Stack.Screen
+          options={{
+            headerStyle: {
+              backgroundColor: 'purple',
+            },
+            headerTintColor: 'white',
+          }}
+          name="Leaves"
+          component={Leaves}
+        />
+        <Stack.Screen
+          options={{
+            headerStyle: {
+              backgroundColor: 'purple',
+            },
+            headerTintColor: 'white',
+          }}
+          name="EmployeeLeaves"
+          component={EmployeeLeaves}
         />
       </Stack.Navigator>
     </NavigationContainer>

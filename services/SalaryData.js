@@ -1,8 +1,8 @@
 let salary = [
-    {id:"1",employeeId:"1",monthYear:"2", basic:100 , hra:100, lta:100, variable:100, bonus:100, TDS:100, tax:100, total:"", workingDaysInMonth:"4",dateOfEntry:"02/02/2020",dateOfModify:"02/03/2020"},
-    {id:"4",employeeId:"1",monthYear:"3", basic:100 , hra:100, lta:100, variable:100, bonus:200, TDS:100, tax:100, total:"", workingDaysInMonth:"4",dateOfEntry:"02/02/2020",dateOfModify:"02/03/2020"},
-    {id:"2",employeeId:"2",monthYear:"", basic:100 , hra:100, lta:100, variable:100, bonus:100, TDS:100, tax:100, total:"", workingDaysInMonth:"4",dateOfEntry:"02/02/2020",dateOfModify:"02/03/2020"},
-    {id:"3",employeeId:"3",monthYear:"", basic:100 , hra:100, lta:100, variable:100, bonus:100, TDS:100, tax:100, total:"", workingDaysInMonth:"4",dateOfEntry:"02/02/2020",dateOfModify:"02/03/2020"},
+    {id:"1",employeeId:"1",monthYear:"2", basic:"100" , hra:"100", lta:"100", variable:"100", bonus:"100", TDS:"100", tax:"100", total:"", workingDaysInMonth:"4",dateOfEntry:"02/02/2020",dateOfModify:"02/03/2020"},
+    {id:"4",employeeId:"1",monthYear:"3", basic:"100" , hra:"100", lta:"100", variable:"100", bonus:"200", TDS:"100", tax:"100", total:"", workingDaysInMonth:"4",dateOfEntry:"02/02/2020",dateOfModify:"02/03/2020"},
+    {id:"2",employeeId:"2",monthYear:"", basic:"100" , hra:"100", lta:"100", variable:"100", bonus:"100", TDS:"100", tax:"100", total:"", workingDaysInMonth:"4",dateOfEntry:"02/02/2020",dateOfModify:"02/03/2020"},
+    {id:"3",employeeId:"3",monthYear:"", basic:"100" , hra:"100", lta:"100", variable:"100", bonus:"100", TDS:"100", tax:"100", total:"", workingDaysInMonth:"4",dateOfEntry:"02/02/2020",dateOfModify:"02/03/2020"},
 ]
 
 
@@ -23,6 +23,11 @@ export const getSalaryById = (id) => {
 		}
 	}
 	return empSalary;
+}
+
+export var addSalary = (employeeSalary)=>{
+    employeeSalary.id = Date.now()+'r';
+    salary.push(employeeSalary);
 }
 
 export const updateSalary = (data) => {

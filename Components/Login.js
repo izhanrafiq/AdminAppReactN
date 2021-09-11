@@ -30,7 +30,7 @@ export default class Login extends Component {
     );
     if (this.state.email == this.state.password) {
       // this.props.navigation.navigate('Employee');
-      this.props.navigation.navigate('Employee');
+      this.props.navigation.navigate('Salary');
     //   NativeModules.Device.getDeviceName((err, name) => {
     //     console.log(err, name);
     //   });
@@ -176,7 +176,8 @@ const styles = StyleSheet.create({
     flex:1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#DCDCDC',
+    backgroundColor: 'rgb(174, 135, 196)',
+    // backgroundColor: '#DCDCDC',
   },
   inputContainer: {
     borderBottomColor: '#F5FCFF',
