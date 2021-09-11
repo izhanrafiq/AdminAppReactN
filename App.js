@@ -1,5 +1,3 @@
-
-
 import * as React from 'react';
 import { View, Text, ScrollView, SafeAreaView } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
@@ -12,7 +10,6 @@ import EmployeeApp from './Components/EmployeeList';
 import EditEmployee from './Components/EditEmployee';
 
 const Stack = createStackNavigator();
-
 
 function App() {
   return (
