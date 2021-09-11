@@ -20,6 +20,11 @@ export const getLeavesById = (id) => {
 	return empLeaves;
 }
 
+export const addLeave = (leave)=>{
+    leave.id = Date.now()+'r';
+    leaves.push(leave);
+}
+
 export const updateLeaves = (data) => {
     for (let i = 0; i < leaves.length; i++) {
         	if(data.id == leaves[i].id){
