@@ -28,6 +28,11 @@ export const updateAttendance = (data) => {
         }
 }
 
+export const addAttendance = (data)=>{
+    data.id = Date.now()+'r';
+    attendanceList.push(data);
+}
+
 export const deleteAttendance = ({id}) => {
     attendanceList = attendanceList.filter((item)=>{return item.id!==id});
 }
