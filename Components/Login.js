@@ -30,7 +30,7 @@ export default class Login extends Component {
     );
     if (this.state.email == this.state.password) {
       // this.props.navigation.navigate('Employee');
-      this.props.navigation.navigate('Salary');
+      this.props.navigation.navigate('Employee');
     //   NativeModules.Device.getDeviceName((err, name) => {
     //     console.log(err, name);
     //   });
@@ -146,7 +146,7 @@ export default class Login extends Component {
         </View>
         <View style={styles.buttonContainer}>
           <Button
-            color="skyblue"
+            color="purple"
             icon={require('../public/images/login.png')}
             mode="contained"
             onPress={() => this.onLoginButton()}>

@@ -9,6 +9,7 @@ import Login from './Components/Login';
 import Salary from './Components/salary/Salary';
 import EmployeeSalary from './Components/salary/EmployeeSalary';
 import EmployeeApp from './Components/EmployeeList';
+import EditEmployee from './Components/EditEmployee';
 
 const Stack = createStackNavigator();
 
@@ -20,7 +21,7 @@ function App() {
         <Stack.Screen
           options={{
             headerStyle: {
-              backgroundColor: 'skyblue',
+              backgroundColor: 'purple',
             },
             headerTintColor: 'white',
           }}
@@ -30,7 +31,7 @@ function App() {
         <Stack.Screen
           options={{
             headerStyle: {
-              backgroundColor: 'skyblue',
+              backgroundColor: 'purple',
             },
             headerTintColor: 'white',
           }}
@@ -40,17 +41,27 @@ function App() {
          <Stack.Screen
           options={{
             headerStyle: {
-              backgroundColor: 'skyblue',
+              backgroundColor: 'purple',
             },
             headerTintColor: 'white',
           }}
           name="Employee"
           component={EmployeeApp}
         />
+         <Stack.Screen
+          options={{
+            headerStyle: {
+              backgroundColor: 'purple',
+            },
+            headerTintColor: 'white',
+          }}
+          name="EditEmployee"
+          component={EditEmployee}
+        />
         <Stack.Screen
           options={{
             headerStyle: {
-              backgroundColor: 'skyblue',
+              backgroundColor: 'purple',
             },
             headerTintColor: 'white',
           }}
