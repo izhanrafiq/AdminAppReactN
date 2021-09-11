@@ -22,9 +22,10 @@ export const getLeavesById = (id) => {
 	return empLeaves;
 }
 
-export var addLeaves = (employeeLeave)=>{
-    employeeLeave.id = Date.now()+'r';
-    leaves.push(employeeLeave);
+
+export const addLeave = (leave)=>{
+    leave.id = Date.now()+'r';
+    leaves.push(leave);
 }
 
 export const updateLeaves = (data) => {
