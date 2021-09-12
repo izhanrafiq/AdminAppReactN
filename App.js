@@ -15,6 +15,8 @@ import AddLeave from './Components/leaves/AddLeaves';
 import EditSalary from './Components/salary/EditSalary';
 import AddSalary from './Components/salary/AddSalary';
 import SalarySlip from './Components/SalarySlip';
+import Attendance from './Components/Attendance';
+import AddAttendance from './Components/AddAttendance';
 
 const Stack = createStackNavigator();
 
