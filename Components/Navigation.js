@@ -14,8 +14,8 @@ const Nav = (props) => {
   const [index, setIndex] = React.useState(0);
   const [render,setRender]=React.useState(0);
   const [routes] = React.useState([
-    { key: 'albums', title: 'Employee', icon:require('../public/images/emp.png')},
-      { key: 'salary', title: 'Salary',     icon:require('../public/images/money.png')},
+    { key: 'albums', title: 'Employee', icon:require('../public/images/user.png')},
+      { key: 'salary', title: 'Salary',     icon:require('../public/images/empsalary.png')},
   ]);
 
   renderScene = ({ route, jumpTo }) => {

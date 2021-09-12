@@ -1,15 +1,17 @@
 import React, { Component,useState } from 'react';
 import { StyleSheet, Text, View, TextInput, Button, TouchableHighlight, Image, Alert } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
-import { updateLeaves } from '../../services/LeavesData';
+import { updateLeaves } from '../../services/Leaves-gpl';
+// import { updateLeaves } from '../../services/LeavesData';
 
 const EditLeaves = (props) => {
     // console.log("parameters...",props);
     const [id, onChangeId] = React.useState(props.route.params.id);
     const [employeeId, onChangeEmployeeId] = React.useState(props.route.params.employeeId);
-    const [count, onChangeCount] = React.useState(props.route.params.count);
+    const [count, onChangeCount] = React.useState(''+props.route.params.count);
     const [year, onChangeYear] = React.useState(props.route.params.year);
     const [startDate, onChangeStartDate] = React.useState(props.route.params.startDate);
+    // const [startDate, onChangeStartDate] = React.useState(props.route.params.startDate.split("T")[0].replaceAll("-","/"));
     const [endDate, onChangeEndDate] = React.useState(props.route.params.endDate);
     const [dateOfEntry, onChangeDateOfEntry] = React.useState(props.route.params.dateOfEntry);
     const [dateOfModify, onChangeDateOfModify] = React.useState(props.route.params.dateOfModify);
@@ -19,14 +21,14 @@ const EditLeaves = (props) => {
     // console.log("in edit leave :",props.route.params.doFetch);
     const doFetch = props.route.params.doFetch;
 
-    let editLeaves = () => {
+    let editLeaves = async () => {
         // const isFetch = !(props.route.params.isFetch);
         let employeeLeave={
             id,employeeId,count,year,startDate,endDate,dateOfEntry,dateOfModify
         };
         console.log("New values for employeeLeave... ",employeeLeave);
     //    console.log("employees before... ",employees);
-        updateLeaves(employeeLeave);
+        await updateLeaves(employeeLeave);
         doFetch();
         props.navigation.navigate('EmployeeLeaves',{});
     }

@@ -10,7 +10,8 @@ import {
     Alert
 } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
-import { addSalary } from '../../services/SalaryData';
+import { addSalary } from '../../services/Salary-gpl';
+// import { addSalary } from '../../services/SalaryData';
 const AddSalary = (props) => {
     
     const [id, onChangeId] = React.useState('');
@@ -24,8 +25,8 @@ const AddSalary = (props) => {
     const [TDS, onChangeTDS] = React.useState('');
     const [tax, onChangeTax] = React.useState('');
     const [workingDaysInMonth, onChangeWorkingDaysInMonth] = React.useState('');
-    const [dateOfEntry, onChangeDateOfEntry] = React.useState('');
-    const [dateOfModify, onChangeDateOfModify] = React.useState('');
+    // const [dateOfEntry, onChangeDateOfEntry] = React.useState('');
+    // const [dateOfModify, onChangeDateOfModify] = React.useState('');
 
     const [value, onChangeText] = React.useState('9');
 
@@ -36,13 +37,13 @@ const AddSalary = (props) => {
     const setEmployeeId = props.route.params.setEmployeeId;
     console.log("in add leave :",setEmployeeId);
     
-    let addToSalary = () => {
+    let addToSalary = async () => {
         let employeeSalary={
-            id,employeeId:empId,monthYear,basic,hra,lta,variable,bonus,TDS,tax,workingDaysInMonth,dateOfEntry,dateOfModify
+            id,employeeId:empId,monthYear,basic,hra,lta,variable,bonus,TDS,tax,workingDaysInMonth,total:100
         };
-        employeeSalary.id= Date.now()+"S";
+        // employeeSalary.id= Date.now()+"S";
         console.log("Added ",employeeSalary);
-        addSalary(employeeSalary);
+        await addSalary(employeeSalary);
         setEmployeeId(empId)
         doFetch();
         props.navigation.navigate('EmployeeSalary', {});
@@ -140,7 +141,8 @@ const AddSalary = (props) => {
                         clearButtonMode="always"
                         onChangeText={onChangeWorkingDaysInMonth} />
                 </View>
-                <View style={styles.inputContainer}>
+                </View>
+                {/* <View style={styles.inputContainer}>
                     <TextInput style={styles.inputs}
                         placeholder="dateOfEntry"
                         underlineColorAndroid='transparent'
@@ -158,7 +160,7 @@ const AddSalary = (props) => {
                         clearButtonMode="always"
                         onChangeText={onChangeDateOfModify} />
                 </View>
-                </View>
+                </View> */}
 
 
                 <View style={{backgroundColor:"blue",height:45,borderRadius:35,marginTop:10}}>

@@ -19,7 +19,7 @@ const Item = ({ item, onPress, style, onDelete, onEdit, onSalary}) => (
 
             <View style={ {flex: 1}} >
             <TouchableOpacity onPress={()=>{
-              onSalary(item);
+              onSalary(item.id);
             }}>
             <Image
             style={styles.tinyLogo}
@@ -100,9 +100,9 @@ const EmployeeApp = () => {
 
         }}
 
-        onSalary={(employee)=>{
+        onSalary={(empId)=>{
             //Implement Salary page.....
-            navigation.navigate('EmployeeSalary', employee);
+            navigation.navigate('EmployeeSalary', (props = {employeeId:empId}));
   
           }}
 

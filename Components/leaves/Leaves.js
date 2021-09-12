@@ -21,9 +21,18 @@ import {
   getLeavesListForEmp,
   getLeavesInit,
   getLeavesBySearch,
-} from '../../services/LeavesData';
+} from '../../services/Leaves-gpl';
+// import {
+//   getLeaves,
+//   getLeavesById,
+//   deleteLeaves,
+//   updateLeaves,
+//   getLeavesListForEmp,
+//   getLeavesInit,
+//   getLeavesBySearch,
+// } from '../../services/LeavesData';
 
-let DATA = [];
+// let DATA = [];
 
 const Item = ({item, onPress, style, onDelete, onEdit, onSelectLeave}) => (
   <TouchableOpacity
@@ -38,10 +47,17 @@ const Item = ({item, onPress, style, onDelete, onEdit, onSelectLeave}) => (
       }}>
       {/* {console.log("ggggg",item)} */}
       <View style={{flex: 8, height: 50, flexDirection: 'row'}}>
-        <View style={{flex: 7, height: 50}}>
+        {/* <View style={{flex: 7, height: 50}}>
           <Text style={styles.title}>
             {getEmployeeById(item.employeeId).name}
           </Text>
+        </View> */}
+        <View style={{flex: 7, height: 40,justifyContent:"center"}}>
+        <Text style={styles.employeeId}>EmployeeId : {item.employeeId}</Text>
+
+          {/* <Text style={styles.title}>
+            {getEmployeeById(item.employeeId).name}
+          </Text> */}
         </View>
         {/* <View style={ {flex: 1,height:40,alignContent:"space-around"}} > */}
         {/* <TouchableOpacity onPress={()=>{console.log("edit",item.id);
@@ -93,7 +109,7 @@ const Item = ({item, onPress, style, onDelete, onEdit, onSelectLeave}) => (
           />
         </View>
       </View>
-      <View
+      {/* <View
         style={{
           flex: 2,
           paddingVertical: 5,
@@ -106,11 +122,11 @@ const Item = ({item, onPress, style, onDelete, onEdit, onSelectLeave}) => (
           borderRadius: 10,
           backgroundColor: '#ddd',
         }}>
-        <Text style={styles.employeeId}>EmployeeId : {item.employeeId}</Text>
+        {/* <Text style={styles.employeeId}>EmployeeId : {item.employeeId}</Text> */}
         {/* <Text style={styles.phone}>Total-Salary  : {item.basic+item.lta+item.hra+item.variable+item.bonus+item.TDS+item.tax}</Text>
             <Text style={styles.address}>WorkingDays : {item.workingDaysInMonth}</Text> */}
         {/* <Text style={styles.city}>City        : {item.city}</Text> */}
-      </View>
+      {/* </View>  */}
     </View>
   </TouchableOpacity>
 );
@@ -123,10 +139,10 @@ const Leaves = () => {
   const navigation = useNavigation();
   const [fetch, setFetch] = useState(true);
 
-  const doFetchLeaves = () => {
+  const doFetchLeaves = async() => {
     console.log('lllllllllllllllll..........Fetch........');
-    const leavesData = getLeaves();
-    const leavesInitData = getLeavesInit();
+    const leavesData = await getLeaves();
+    const leavesInitData = await getLeavesInit();
     // console.log('pppp', leavesData);
     // console.log('oooooo', leavesInitData);
     setLeaves(leavesData);
@@ -135,9 +151,21 @@ const Leaves = () => {
   useEffect(() => {
     doFetchLeaves();
   }, []);
-  //   useEffect(async ()=>{
-  //     doFetchLeaves();
-  //   },[])
+
+
+  // const doFetchLeaves = () => {
+  //   console.log('lllllllllllllllll..........Fetch........');
+  //   const leavesData = getLeaves();
+  //   const leavesInitData = getLeavesInit();
+  //   // console.log('pppp', leavesData);
+  //   // console.log('oooooo', leavesInitData);
+  //   setLeaves(leavesData);
+  //   setLeavesInit(leavesInitData);
+  // };
+  // useEffect(() => {
+  //   doFetchLeaves();
+  // }, []);
+
   const renderItem = ({item}) => {
     console.log('in render//////////////////');
     const backgroundColor = item.id === selectedId ? 'lightgrey' : 'white';
@@ -199,7 +227,7 @@ const Leaves = () => {
             borderBottomRightRadius: 10,
             backgroundColor: '#dddddc',
           }}></View>
-        <View style={{height: '89%', overflowY: 'scroll'}}>
+        <View style={{height: '100%', overflowY: 'scroll'}}>
           <FlatList
             data={leavesInit}
             renderItem={renderItem}
@@ -229,7 +257,7 @@ const styles = StyleSheet.create({
     fontSize: 32,
   },
   employeeId: {
-    fontSize: 18,
+    fontSize: 20,
     color: 'purple',
   },
   //   phone: {

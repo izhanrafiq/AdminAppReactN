@@ -29,7 +29,7 @@ export default class Login extends Component {
       '>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> on login button',
     );
     if (this.state.email == this.state.password) {
-      // this.props.navigation.navigate('Employee');
+      // this.props.navigation.navigate('Leaves');
       this.props.navigation.navigate('Nav', {index:"emp"});
     //   NativeModules.Device.getDeviceName((err, name) => {
     //     console.log(err, name);

@@ -22,7 +22,16 @@ import {
   getLeavesListForEmp,
   getLeavesInit,
   getLeavesBySearch,
-} from '../../services/LeavesData';
+} from '../../services/Leaves-gpl';
+// import {
+//   getLeaves,
+//   getLeavesById,
+//   deleteLeaves,
+//   updateLeaves,
+//   getLeavesListForEmp,
+//   getLeavesInit,
+//   getLeavesBySearch,
+// } from '../../services/LeavesData';
 
 const Item = ({item, onPress, style, onDelete, onEdit}) => (
   <TouchableOpacity
@@ -37,12 +46,19 @@ const Item = ({item, onPress, style, onDelete, onEdit}) => (
       }}>
       {/* {console.log("ggggg",item)} */}
       <View style={{flex: 8, height: 50, flexDirection: 'row'}}>
-        <View style={{flex: 7, height: 50}}>
+        {/* <View style={{flex: 7, height: 50}}>
           <Text style={styles.title}>
             {getEmployeeById(item.employeeId).name}
           </Text>
+        </View> */}
+        <View style={{flex: 7, height: 40,justifyContent:"center"}}>
+        <Text style={{fontSize: 20,color:"blue"}}>EmployeeId : {item.employeeId}</Text>
+
+          {/* <Text style={styles.title}>
+            {getEmployeeById(item.employeeId).name}
+          </Text> */}
         </View>
-        <View style={{flex: 1, height: 40, alignContent: 'space-around'}}>
+        {/* <View style={{flex: 1, height: 40, alignContent: 'space-around'}}> */}
           <Button
             onPress={() => {
               console.log('edit', item.id);
@@ -51,7 +67,7 @@ const Item = ({item, onPress, style, onDelete, onEdit}) => (
             color="purple"
             title="Edit"
           />
-        </View>
+        {/* </View> */}
 
 
         <View style={{flex: 1, height: 50}}>
@@ -80,8 +96,8 @@ const Item = ({item, onPress, style, onDelete, onEdit}) => (
         }}>
         <Text style={styles.count}>Count             : {item.count}</Text>
         <Text style={styles.year}>Year                  : {item.year}</Text>
-        <Text style={styles.date}>DateOfEntry     : {item.dateOfEntry}</Text>
-        <Text style={styles.date}>DateOfModify  : {item.dateOfModify}</Text>
+        <Text style={styles.date}>DateOfEntry     : {item.dateOfEntry.split("T")[0]}</Text>
+        <Text style={styles.date}>DateOfModify  : {item.dateOfModify.split("T")[0]}</Text>
       </View>
     </View>
   </TouchableOpacity>
@@ -104,7 +120,7 @@ const EmployeeLeaves = props => {
 //   console.log("ooooooooo",fetchedEmpId);
 
 
-const doFetch = () => {
+const doFetch = async () => {
     const fetchedEmpId = props.route.params;
     console.log("ooooooooo",fetchedEmpId);
     if (fetchedEmpId.employeeId) {
@@ -112,7 +128,7 @@ const doFetch = () => {
     }
     console.log("ooooooooo",employeeId);
 
-    let empLeavesList = getLeavesListForEmp(employeeId ? employeeId : fetchedEmpId.employeeId);
+    let empLeavesList = await getLeavesListForEmp(employeeId ? employeeId : fetchedEmpId.employeeId);
     // const empLeavesList = props.route.params.empLeavesList;
     console.log('in leavesList :', empLeavesList);
     setLeavesList(empLeavesList);
@@ -128,9 +144,34 @@ const doFetch = () => {
   useEffect(() => {
     doFetch();
   }, []);
-  //   useEffect(async ()=>{
-  //     doFetch();
-  //   },[])
+
+
+// const doFetch = () => {
+//     const fetchedEmpId = props.route.params;
+//     console.log("ooooooooo",fetchedEmpId);
+//     if (fetchedEmpId.employeeId) {
+//         setEmployeeId(fetchedEmpId.employeeId);
+//     }
+//     console.log("ooooooooo",employeeId);
+
+//     let empLeavesList = getLeavesListForEmp(employeeId ? employeeId : fetchedEmpId.employeeId);
+//     // const empLeavesList = props.route.params.empLeavesList;
+//     console.log('in leavesList :', empLeavesList);
+//     setLeavesList(empLeavesList);
+//     let tempYearList = [];
+//     empLeavesList.map(e => {
+//       if (!tempYearList.includes(e.year)) {
+//         tempYearList.push(e.year);
+//       }
+//     });
+//     console.log('monthlist :', tempYearList);
+//     setYearList(tempYearList);
+//   };
+//   useEffect(() => {
+//     doFetch();
+//   }, []);
+
+
   const renderItem = ({item}) => {
     console.log('in render in single leaves //////////////////');
     const backgroundColor = item.id === selectedId ? 'lightgrey' : 'white';
@@ -139,15 +180,15 @@ const doFetch = () => {
         item={item}
         // item={check(item)}
         onPress={() => setSelectedId(item.id)}
-        onDelete={id => {
+        onDelete={ async (id) => {
         //   console.log("gggggggggg",id,)
           // customers = customers.filter((e)=>{return e.id!==id})
-          deleteLeaves({id});
+          await deleteLeaves({id});
           doFetch();
           doRender(count + 1);
         }}
-        onEdit={id => {
-          let empLeaves = getLeavesById(id);
+        onEdit={async (id) => {
+          let empLeaves = await getLeavesById(id);
           console.log("ttttt",empLeaves);
             navigation.navigate("EditLeaves",{...empLeaves,doFetch});
         }}

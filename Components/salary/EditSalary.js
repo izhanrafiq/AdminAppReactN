@@ -2,40 +2,54 @@ import React, { Component,useState } from 'react';
 import { StyleSheet, Text, View, TextInput, Button, TouchableHighlight, Image, Alert } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 // import { updateLeaves } from '../../services/LeavesData';
-import { updateSalary } from '../../services/SalaryData';
+import { updateSalary } from '../../services/Salary-gpl';
+// import { updateSalary } from '../../services/SalaryData';
 
 const EditSalary = (props) => {
-    // console.log("parameters...",props);
+    console.log("parameters...",props.route.params.monthYear,typeof (props.route.params.monthYear));
     const [id, onChangeId] = React.useState(props.route.params.id);
     const [employeeId, onChangeEmployeeId] = React.useState(props.route.params.employeeId);
     const [monthYear, onChangeMonthYear] = React.useState(props.route.params.monthYear);
-    const [basic, onChangeBasic] = React.useState(props.route.params.basic);
-    const [hra, onChangeHra] = React.useState(props.route.params.hra);
-    const [lta, onChangeLta] = React.useState(props.route.params.lta);
-    const [variable, onChangeVariable] = React.useState(props.route.params.variable);
-    const [bonus, onChangeBonus] = React.useState(props.route.params.bonus);
-    const [TDS, onChangeTDS] = React.useState(props.route.params.TDS);
-    const [tax, onChangeTax] = React.useState(props.route.params.tax);
-    const [workingDaysInMonth, onChangeWorkingDaysInMonth] = React.useState(props.route.params.workingDaysInMonth);
-    const [dateOfEntry, onChangeDateOfEntry] = React.useState(props.route.params.dateOfEntry);
-    const [dateOfModify, onChangeDateOfModify] = React.useState(props.route.params.dateOfModify);
+    const [basic, onChangeBasic] = React.useState(''+props.route.params.basic);
+    const [hra, onChangeHra] = React.useState(''+props.route.params.hra);
+    const [lta, onChangeLta] = React.useState(''+props.route.params.lta);
+    const [variable, onChangeVariable] = React.useState(''+props.route.params.variable);
+    const [bonus, onChangeBonus] = React.useState(''+props.route.params.bonus);
+    const [TDS, onChangeTDS] = React.useState(''+props.route.params.TDS);
+    const [tax, onChangeTax] = React.useState(''+props.route.params.tax);
+    const [workingDaysInMonth, onChangeWorkingDaysInMonth] = React.useState(''+props.route.params.workingDaysInMonth);
+    // const [dateOfEntry, onChangeDateOfEntry] = React.useState(props.route.params.dateOfEntry);
+    // const [dateOfModify, onChangeDateOfModify] = React.useState(props.route.params.dateOfModify);
 
     const [value, onChangeText] = React.useState('9');
 
     // console.log("in edit leave :",props.route.params.doFetch);
     const doFetch = props.route.params.doFetch;
 
-    let editSalary = () => {
+    let editSalary = async() => {
         // const isFetch = !(props.route.params.isFetch);
         let employeeSalary={
-            id,employeeId,monthYear,basic,hra,lta,variable,bonus,TDS,tax,workingDaysInMonth,dateOfEntry,dateOfModify
+            id,employeeId,monthYear,basic,hra,lta,variable,bonus,TDS,tax,workingDaysInMonth,total:100
+            // id,employeeId,monthYear,basic:parseFloat(basic),hra:parseFloat(hra),lta:parseFloat(lta),variable:parseFloat(variable),bonus:parseFloat(bonus),TDS:parseFloat(TDS),tax:parseFloat(tax),workingDaysInMonth:parseFloat(workingDaysInMonth)
         };
         console.log("New values for employeeSalary... ",employeeSalary);
     //    console.log("employees before... ",employees);
-        updateSalary(employeeSalary);
+        await updateSalary(employeeSalary);
         doFetch();
         props.navigation.navigate('EmployeeSalary',{});
     }
+
+    // let editSalary = () => {
+    //     // const isFetch = !(props.route.params.isFetch);
+    //     let employeeSalary={
+    //         id,employeeId,monthYear,basic,hra,lta,variable,bonus,TDS,tax,workingDaysInMonth,dateOfEntry,dateOfModify
+    //     };
+    //     console.log("New values for employeeSalary... ",employeeSalary);
+    // //    console.log("employees before... ",employees);
+    //     updateSalary(employeeSalary);
+    //     doFetch();
+    //     props.navigation.navigate('EmployeeSalary',{});
+    // }
 
         return (
             // <ScrollView>
@@ -129,7 +143,8 @@ const EditSalary = (props) => {
                         clearButtonMode="always"
                         onChangeText={onChangeWorkingDaysInMonth} />
                 </View>
-                <View style={styles.inputContainer}>
+                </View>
+                {/* <View style={styles.inputContainer}>
                     <TextInput style={styles.inputs}
                         placeholder="dateOfEntry"
                         underlineColorAndroid='transparent'
@@ -147,7 +162,7 @@ const EditSalary = (props) => {
                         clearButtonMode="always"
                         onChangeText={onChangeDateOfModify} />
                 </View>
-                </View>
+                </View> */}
 
                 <View style={{backgroundColor:"purple",height:45,borderRadius:35,marginTop:10}}>
                 <TouchableHighlight style={[styles.buttonContainer, styles.loginButton]} onPress={() => editSalary()}>

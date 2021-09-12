@@ -20,7 +20,16 @@ import {
   updateSalary,
   deleteSalary,
   getSalaryInit,
-} from '../../services/SalaryData';
+} from '../../services/Salary-gpl';
+// import {
+//   getSalary,
+//   getSalaryById,
+//   getSalaryBySearch,
+//   getSalaryListForEmp,
+//   updateSalary,
+//   deleteSalary,
+//   getSalaryInit,
+// } from '../../services/SalaryData';
 import { getEmployeeById } from '../../services/EmployeeData';
 import SelectDropdown from 'react-native-select-dropdown';
 
@@ -38,10 +47,17 @@ const Item = ({ item, onPress, style, onDelete, onEdit, onSelectMonth, navigatep
       }}>
       {/* {console.log("ggggg",item)} */}
       <View style={{ flex: 8, height: 50, flexDirection: 'row' }}>
-        <View style={{ flex: 7, height: 50 }}>
+        {/* <View style={{ flex: 7, height: 50 }}>
           <Text style={styles.title}>
             {getEmployeeById(item.employeeId).name}
           </Text>
+        </View> */}
+        <View style={{flex: 7, height: 40,justifyContent:"center"}}>
+        <Text style={{fontSize: 20,color:"blue"}}>EmployeeId : {item.employeeId}</Text>
+
+          {/* <Text style={styles.title}>
+            {getEmployeeById(item.employeeId).name}
+          </Text> */}
         </View>
         {/* <View style={{flex: 1, height: 40, alignContent: 'space-around'}}> */}
         <Button
@@ -103,8 +119,8 @@ const Item = ({ item, onPress, style, onDelete, onEdit, onSelectMonth, navigatep
           WorkingDays    : {item.workingDaysInMonth}
         </Text>
         <Text style={styles.data}>Month/Year       : {item.monthYear}</Text>
-        <Text style={styles.data}>DateOfEntry      : {item.dateOfEntry}</Text>
-        <Text style={styles.data}>DateOfModify   : {item.dateOf}</Text>
+        {/* <Text style={styles.data}>DateOfEntry      : {item.dateOfEntry}</Text>
+        <Text style={styles.data}>DateOfModify   : {item.dateOf}</Text> */}
       </View>
     </View>
   </TouchableOpacity>
@@ -123,7 +139,7 @@ const EmployeeSalary = props => {
   const [fetch, setFetch] = useState(true);
   const nav = useNavigation();
 
-  const doFetch = () => {
+  const doFetch = async () => {
     const fetchedEmpId = props.route.params;
     console.log("ooooooooo", fetchedEmpId);
     if (fetchedEmpId.employeeId) {
@@ -131,7 +147,7 @@ const EmployeeSalary = props => {
     }
     console.log("ooooooooo", employeeId);
 
-    let empSalaryList = getSalaryListForEmp(employeeId ? employeeId : fetchedEmpId.employeeId);
+    let empSalaryList = await getSalaryListForEmp(employeeId ? employeeId : fetchedEmpId.employeeId);
     console.log('in salaryList :', empSalaryList);
     setSalaryList(empSalaryList);
     let tempMonthList = [];
@@ -146,9 +162,33 @@ const EmployeeSalary = props => {
   useEffect(() => {
     doFetch();
   }, []);
-  //   useEffect(async ()=>{
-  //     doFetch();
-  //   },[])
+
+
+  // const doFetch = () => {
+  //   const fetchedEmpId = props.route.params;
+  //   console.log("ooooooooo", fetchedEmpId);
+  //   if (fetchedEmpId.employeeId) {
+  //     setEmployeeId(fetchedEmpId.employeeId);
+  //   }
+  //   console.log("ooooooooo", employeeId);
+
+  //   let empSalaryList = getSalaryListForEmp(employeeId ? employeeId : fetchedEmpId.employeeId);
+  //   console.log('in salaryList :', empSalaryList);
+  //   setSalaryList(empSalaryList);
+  //   let tempMonthList = [];
+  //   empSalaryList.map(e => {
+  //     if (!tempMonthList.includes(e.monthYear)) {
+  //       tempMonthList.push(e.monthYear);
+  //     }
+  //   });
+  //   console.log('monthlist :', tempMonthList);
+  //   setMonthList(tempMonthList);
+  // };
+  // useEffect(() => {
+  //   doFetch();
+  // }, []);
+
+
   const renderItem = ({ item }) => {
     console.log('in render in single salary //////////////////');
     const backgroundColor = item.id === selectedId ? 'lightgrey' : 'white';
@@ -158,15 +198,15 @@ const EmployeeSalary = props => {
         item={item}
         // item={check(item)}
         onPress={() => setSelectedId(item.id)}
-        onDelete={id => {
+        onDelete={async (id) => {
           // console.log("gggggggggg",id,)
           // customers = customers.filter((e)=>{return e.id!==id})
-          deleteSalary({ id });
+          await deleteSalary({ id });
           doFetch();
           doRender(count + 1);
         }}
-        onEdit={id => {
-          let empSalary = getSalaryById(id);
+        onEdit={ async (id) => {
+          let empSalary = await getSalaryById(id);
           // console.log("ttttt",customer)
           navigation.navigate("EditSalary", { ...empSalary, doFetch });
         }}
