@@ -12,7 +12,7 @@ import {
   Button,
   ScrollView,
 } from 'react-native';
-// import { deleteCustomer, getCustomerById, getCustomers } from "../services/CustomerAPI";
+// import { deleteCustomer, getCustomerById, getCustomers } from "../services/Employee-gql";
 import {
   getSalary,
   getSalaryById,
@@ -21,8 +21,8 @@ import {
   updateSalary,
   deleteSalary,
   getSalaryInit,
-} from '../../services/SalaryData';
-import {getEmployeeById} from '../../services/EmployeeData';
+} from '../../services/Employee-gql';
+import {getEmployeeById} from '../../services/Employee-gql';
 
 let DATA = [];
 

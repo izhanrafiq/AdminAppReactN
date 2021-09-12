@@ -1,7 +1,7 @@
 import React, { Component,useState } from 'react';
 import { StyleSheet, Text, View, TextInput, Button, TouchableHighlight, Image, Alert } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
-import {updateEmployee} from '../services/EmployeeData';
+import {updateEmployee} from '../services/Employee-gql';
 
 const EditEmployee = (props) => {
     console.log("parameters...",props);
@@ -29,7 +29,7 @@ const EditEmployee = (props) => {
         updateEmployee(employee);
         // console.log("========================",);
         // console.log("employees after... ",employees);
-        props.navigation.navigate('Employee', {});
+        props.navigation.navigate('Nav', {index:"emp"});
     }
 
         return (

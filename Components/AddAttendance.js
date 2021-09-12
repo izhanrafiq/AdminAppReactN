@@ -10,7 +10,7 @@ import {
     Alert
 } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
-import {addAttendance} from '../services/AttendanceData'
+import {addAttendance} from '../services/Employee-gql'
 
 const AddAttendance = (props) => {
     const [id, onChangeId] = React.useState('');
@@ -28,6 +28,7 @@ const AddAttendance = (props) => {
         };
         attendance.id= Date.now()+"S";
         attendance.employeeId = props.route.params.employeeId;
+        console.log("New Record",attendance)
         await addAttendance(attendance);
         console.log("Added Attendance: ",attendance);
         props.navigation.navigate('Employee', {});

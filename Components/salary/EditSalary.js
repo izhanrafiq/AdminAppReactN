@@ -1,8 +1,8 @@
 import React, { Component,useState } from 'react';
 import { StyleSheet, Text, View, TextInput, Button, TouchableHighlight, Image, Alert } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
-// import { updateLeaves } from '../../services/LeavesData';
-import { updateSalary } from '../../services/SalaryData';
+// import { updateLeaves } from '../../services/Employee-gql';
+import { updateSalary } from '../../services/Employee-gql';
 
 const EditSalary = (props) => {
     // console.log("parameters...",props);

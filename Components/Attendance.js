@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Image,FlatList, SafeAreaView, StatusBar, Button,StyleSheet, Text, TouchableHighlight, TouchableOpacity, View } from "react-native";
-import {getAttendances, getAttendancesById} from "../services/AttendanceData";
+import {getAttendances, getAttendanceByEmployeeId} from "../services/Employee-gql";
 
 const Item = ({ item, onPress, style, onDelete}) => (
   <TouchableOpacity onPress={onPress} style={[styles.item, style]}>
@@ -16,7 +16,7 @@ const Item = ({ item, onPress, style, onDelete}) => (
                 <Text style={styles.title}>Employee ID: {item.employeeId}</Text>
             </View>
 
-            <View  style={{flex:1, height: 65}}>
+            {/* <View  style={{flex:1, height: 65}}>
             <TouchableOpacity onPress={()=>{
               onDelete(item.id);
               }}>
@@ -25,7 +25,7 @@ const Item = ({ item, onPress, style, onDelete}) => (
             source={require('../public/images/delete.png')}
           />
           </TouchableOpacity>
-            </View>
+            </View> */}
           </View>
 
         <View style={{flex:2,  height: 15}} >
@@ -49,7 +49,7 @@ let AttendancePage = (props) => {
   },[]);
 
   loadAttendance = async(eid) => {
-    let list = await getAttendancesById(eid);
+    let list = await getAttendanceByEmployeeId(eid);
     setId(eid);
     setAttendances(list);
   }

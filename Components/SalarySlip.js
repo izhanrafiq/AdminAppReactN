@@ -9,7 +9,7 @@ import {
 import RNHTMLtoPDF from 'react-native-html-to-pdf';
 import RNPrint from 'react-native-print';
 import FileViewer from 'react-native-file-viewer';
-import { getSalaryById } from '../services/SalaryData';
+import { getSalaryById } from '../services/Employee-gql';
 import { getEmployeeById, getSalaryByEmployeeId, getSalaryByEmployeeIdmonthYear } from '../services/Employee-gql';
 
 import { useNavigation } from '@react-navigation/native';

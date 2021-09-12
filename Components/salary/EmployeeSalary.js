@@ -20,8 +20,8 @@ import {
   updateSalary,
   deleteSalary,
   getSalaryInit,
-} from '../../services/SalaryData';
-import { getEmployeeById } from '../../services/EmployeeData';
+} from '../../services/Employee-gql';
+import { getEmployeeById } from '../../services/Employee-gql';
 import SelectDropdown from 'react-native-select-dropdown';
 
 

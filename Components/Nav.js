@@ -1,13 +1,16 @@
 import * as React from 'react';
 import { BottomNavigation, Text } from 'react-native-paper';
 import EmployeeApp from './EmployeeList';
-import Salary from './salary/Salary';
+import Salary from './Salary';
 import { useNavigation } from '@react-navigation/core';
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
 
 
 const Nav = (props) => {
     React.useEffect(()=>{
+        if(props.route.params.index=="emp"){
+            setIndex(0);
+        }
         },[]);
 
     

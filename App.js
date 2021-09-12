@@ -17,6 +17,8 @@ import AddSalary from './Components/salary/AddSalary';
 import SalarySlip from './Components/SalarySlip';
 import Attendance from './Components/Attendance';
 import AddAttendance from './Components/AddAttendance';
+import Nav from './Components/Navigation';
+import AddEmployee from './Components/AddEmployee';
 
 const Stack = createStackNavigator();
 
@@ -41,6 +43,16 @@ function App() {
             },
             headerTintColor: 'white',
           }}
+          name="AddEmployee"
+          component={AddEmployee}
+        />
+        <Stack.Screen
+          options={{
+            headerStyle: {
+              backgroundColor: 'purple',
+            },
+            headerTintColor: 'white',
+          }}
           name="Salary"
           component={Salary}
         />
@@ -50,6 +62,7 @@ function App() {
               backgroundColor: 'purple',
             },
             headerTintColor: 'white',
+            headerShown:false,
           }}
           name="Employee"
           component={EmployeeApp}
@@ -63,6 +76,17 @@ function App() {
           }}
           name="EditEmployee"
           component={EditEmployee}
+        />
+      <Stack.Screen
+          options={{
+            headerStyle: {
+              backgroundColor: 'purple',
+            },
+            headerTintColor: 'white',
+            headerShown: false,
+          }}
+          name="Nav"
+          component={Nav}
         />
       <Stack.Screen
           options={{
@@ -141,7 +165,7 @@ function App() {
             },
             headerTintColor: 'white',
           }}
-          name="Leaves"
+          name="LeavePage"
           component={Leaves}
         />
         <Stack.Screen

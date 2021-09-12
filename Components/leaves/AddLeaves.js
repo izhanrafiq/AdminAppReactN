@@ -10,7 +10,7 @@ import {
     Alert
 } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
-import { addLeaves } from '../../services/LeavesData';
+import { addLeaves } from '../../services/Employee-gql';
 
 const AddLeave = (props) => {
     

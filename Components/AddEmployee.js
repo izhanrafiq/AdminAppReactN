@@ -10,7 +10,7 @@ import {
     Alert
 } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
-import {addEmployee} from '../services/EmployeeData'
+import {addEmployee} from '../services/Employee-gql'
 
 const AddEmployee = (props) => {
     const [id, onChangeId] = React.useState('');
@@ -36,7 +36,7 @@ const AddEmployee = (props) => {
         employee.id= Date.now()+"S";
         console.log("Added ",employee);
         await addEmployee(employee);
-        props.navigation.navigate('EmployeeList', {});
+        props.navigation.navigate('Nav', {index:"emp"});
     }
 
         return (

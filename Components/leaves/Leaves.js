@@ -12,7 +12,7 @@ import {
   Button,
   ScrollView,
 } from 'react-native';
-import {getEmployeeById} from '../../services/EmployeeData';
+import {getEmployeeById} from '../../services/Employee-gql';
 import {
   getLeaves,
   getLeavesById,
@@ -21,7 +21,7 @@ import {
   getLeavesListForEmp,
   getLeavesInit,
   getLeavesBySearch,
-} from '../../services/LeavesData';
+} from '../../services/Employee-gql';
 
 let DATA = [];
 

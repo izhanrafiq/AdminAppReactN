@@ -128,14 +128,12 @@ export const deleteEmployee = async (id) => {
     return response;
 }
 
-
 export const updateEmployee = async (record) => {
     console.log("updateRecord:", record)
     const query = 'mutation { updateEmployee(' +
         'id:"' + record.id +
         '"name:"' + record.name +
         '",email:"' + record.email +
-        '",address:"' + record.address +
         '",dateOfBirth:"' + record.dateOfBirth +
         '",dateOfJoining:"' + record.dateOfJoining +
         '",education:"' + record.education +
@@ -176,11 +174,35 @@ export var getSalary = async function () {
     return response.salaries;
 
 }
+export var getSalaryById = async function (id) {
+    const query = gql
+        `{
+      salaries(id:`+ id + `){
+          id,
+           employeeId,
+           monthYear,
+           basic,
+           hra,
+           lta,
+           variable,
+           bonus,
+           TDS,
+           tax,
+           total,
+           workingDaysInMonth
+       
+       
+         }}
+  `
+    let response = await graphQLClient.request(query)
+    console.log(JSON.stringify(response, undefined, 2))
+    return response.salaries;
 
+}
 export var getSalaryByEmployeeId = async function (employeeId) {
     const query = gql
         `{
-      salaries(employeeId:`+ employeeId + `){
+      salaries(employeeId:`+ employeeId + `){id,
            employeeId,
            monthYear,
            basic,
@@ -250,16 +272,19 @@ export var getSalaryByMonthYear = async function (monthYear) {
 
 
 export const addSalary = async (record) => {
+
+    const total = record.basic + record.hra + record.lta + record.variable + record.bonus + record.TDS - record.tax
+
     const query = 'mutation { addSalary(employeeId:"' + record.employeeId +
         '",monthYear:"' + record.monthYear +
-        '",basic:"' + record.basic +
-        '",hra:"' + record.hra +
-        '",lta:"' + record.lta +
-        '",variable:"' + record.variable +
-        '",bonus:"' + record.bonus +
-        '",TDS:"' + record.TDS +
-        '",tax:"' + record.tax +
-        '",workingDaysInMonth:"' + record.workingDaysInMonth + '"){id}}';
+        '",basic:' + record.basic +
+        ',hra:' + record.hra +
+        ',lta:' + record.lta +
+        ',variable:' + record.variable +
+        ',bonus:' + record.bonus +
+        ',TDS:' + record.TDS +
+        ',tax:' + record.tax +
+        ',workingDaysInMonth:' + record.workingDaysInMonth + ',total:' + total + '){id}}';
     const response = await graphQLClient.request(query);
     return response;
 }
@@ -274,17 +299,18 @@ export const deleteSalary = async (id) => {
 }
 
 export const updateSalary = async (record) => {
+    const total = record.basic + record.hra + record.lta + record.variable + record.bonus + record.TDS - record.tax
     console.log("updateRecord:", record)
     const query = 'mutation { updateSalary(employeeId:"' + record.employeeId +
         '",monthYear:"' + record.monthYear +
-        '",basic:"' + record.basic +
-        '",hra:"' + record.hra +
-        '",lta:"' + record.lta +
-        '",variable:"' + record.variable +
-        '",bonus:"' + record.bonus +
-        '",TDS:"' + record.TDS +
-        '",tax:"' + record.tax +
-        '",workingDaysInMonth:"' + record.workingDaysInMonth + '"){id}}';
+        '",basic:' + record.basic +
+        ',hra:' + record.hra +
+        ',lta:' + record.lta +
+        ',variable:' + record.variable +
+        ',bonus:' + record.bonus +
+        ',TDS:' + record.TDS +
+        ',tax:' + record.tax +
+        ',workingDaysInMonth:' + record.workingDaysInMonth + ',total:' + total + '){id}}';
     const response = await graphQLClient.request(query);
     console.log(response);
     return response;
@@ -314,7 +340,7 @@ export var addLeaves = async function (record) {
 
     const query = 'mutation{ addLeave(employeeId:' + record.employeeId +
         ',startDate:' + record.startDate + ',endDate:' + record.endDate +
-        ',count:' + record.count + ',year:' + record.year + '){id}}'
+        ',count:' + record.count + ',year:"' + record.year + '"){id}}'
 
     console.log("query:" + query);
     const response = await client.request(query);
@@ -338,7 +364,7 @@ export var updateLeaves = async function (record) {
 
     const query = 'mutation{ updateLeave(id:' + record.id + ',employeeId:' + record.employeeId +
         ',startDate:' + record.startDate + ',endDate:' + record.endDate +
-        ',count:' + record.count + ',year:' + record.year + '){id}}'
+        ',count:' + record.count + ',year:"' + record.year + '"){id}}'
 
     console.log("query:" + query);
     const response = await client.request(query);
@@ -394,20 +420,21 @@ export var getAttendanceByEmployeeId = async function (employeeId) {
 }
 
 
-export var addAttendace = async (record) => {
-    console.log(record)
-
+export var addAttendance = async (record) => {
     const mutation = gql`mutation { addAttendance 
       (employeeId:"`+ record.employeeId +
         `",email:"` + record.email +
         `",date:"` + record.date +
         `",inTimeDate:"` + record.inTimeDate +
         `",outTime:"` + record.outTime +
-        `",totalHours:"` + record.totalHours +
-        `"){id}}"`;
-    const response = await GraphQLClient.request(mutation);
+        `",totalHours:` + record.totalHours +
+        `){id}}"`;
+        console.log("Added...")
+        let response = await graphQLClient.request(mutation);
+    console.log("Added...",response)
     return response;
 }
+
 export const updateAttendance = async (record) => {
     console.log("updateRecord:", record)
     const mutation = gql`mutation { updateAttendance 
@@ -416,8 +443,8 @@ export const updateAttendance = async (record) => {
         `",date:"` + record.date +
         `",inTimeDate:"` + record.inTimeDate +
         `",outTime:"` + record.outTime +
-        `",totalHours:"` + record.totalHours +
-        `"){id}}"`;
+        `",totalHours:` + record.totalHours +
+        `){id}}"`;
     const response = await graphQLClient.request(mutation);
     return response;
 }

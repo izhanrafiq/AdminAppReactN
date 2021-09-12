@@ -10,7 +10,7 @@ import {
     Alert
 } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
-import { addSalary } from '../../services/SalaryData';
+import { addSalary } from '../../services/Employee-gql';
 const AddSalary = (props) => {
     
     const [id, onChangeId] = React.useState('');

@@ -12,7 +12,7 @@ import {
   Button,
   ScrollView,
 } from 'react-native';
-import {getEmployeeById} from '../../services/EmployeeData';
+import {getEmployeeById} from '../../services/Employee-gql';
 import SelectDropdown from 'react-native-select-dropdown';
 import {
   getLeaves,
@@ -22,7 +22,7 @@ import {
   getLeavesListForEmp,
   getLeavesInit,
   getLeavesBySearch,
-} from '../../services/LeavesData';
+} from '../../services/Employee-gql';
 
 const Item = ({item, onPress, style, onDelete, onEdit}) => (
   <TouchableOpacity

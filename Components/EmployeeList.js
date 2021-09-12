@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Image,FlatList, SafeAreaView, StatusBar, Button,StyleSheet, Text, TouchableHighlight, TouchableOpacity, View } from "react-native";
-import { getEmployees,deleteEmployee,updateEmployee, getEmployeeById } from "../services/EmployeeData";
-import { getSalaryListForEmp } from "../services/SalaryData";
+import { getEmployees,deleteEmployee,updateEmployee, getEmployeeById } from "../services/Employee-gql";
 import EditEmployee from "./EditEmployee";
+import { useNavigation } from "@react-navigation/core";
 
-const Item = ({ item, onPress, style, onDelete, onEdit, onSalary}) => (
+const Item = ({ item, onPress, style, onDelete, onEdit, onSalary, onLeave, onAttendence}) => (
   <TouchableOpacity onPress={onPress} style={[styles.item, style]}>
       <View style={{
         flex: 1,
@@ -27,10 +27,21 @@ const Item = ({ item, onPress, style, onDelete, onEdit, onSalary}) => (
           />
           </TouchableOpacity>
          </View>
-                    
+
             <View style={ {flex: 1}} >
             <TouchableOpacity onPress={()=>{
-              onSalary(item.id);
+              onLeave(item);
+            }}>
+            <Image
+            style={styles.tinyLogo}
+            source={require('../public/images/Leave.png')}
+          />
+          </TouchableOpacity>
+         </View>
+
+            <View style={ {flex: 1}} >
+            <TouchableOpacity onPress={()=>{
+              onSalary(item);
             }}>
             <Image
             style={styles.tinyLogo}
@@ -72,19 +83,17 @@ const Item = ({ item, onPress, style, onDelete, onEdit, onSalary}) => (
   </TouchableOpacity>
 );
 
-const EmployeeApp = ({navigation}) => {
+const EmployeeApp = () => {
 
+  const navigation= useNavigation();
   const [selectedId, setSelectedId] = useState(null);
   const [count, doRender] = useState(0);
   const [employees, setEmployees] = useState([]);
   //  const [employees, setEmployees] = useState(getEmployees());
 
   useEffect(()=>{
-    const unsubscribe = navigation.addListener('focus', () => {
       loadEmployee();
-    });
-    return unsubscribe;
-  },[navigation]);
+  },[]);
 
   loadEmployee = async() => {
     let list = await getEmployees();
@@ -107,19 +116,21 @@ const EmployeeApp = ({navigation}) => {
         onEdit={(employee)=>{
           console.log("Employee....to....edit...", employee);
           navigation.navigate('EditEmployee', employee);
+          loadEmployee();
 
         }}
 
-        onSalary={(empId)=>{
+        onSalary={(employee)=>{
             //Implement Salary page.....
-            console.log("kkkkkk",empId)
-            let empSalaryList = getSalaryListForEmp(empId);
-            console.log("from employeelist :",empSalaryList)
-            navigation.navigate('EmployeeSalary',props={empSalaryList});
+            navigation.navigate('EmployeeSalary', employee);
+  
           }}
-   onAttendence={(employee)=>{
-          navigation.navigate('AttendencePage',employee);
-        }}
+          onLeave={(employee)=>{
+            navigation.navigate('LeavePage',employee);
+          }}
+          onAttendence={(employee)=>{
+            navigation.navigate('AttendencePage',employee);
+          }}
 
         style={{ backgroundColor }}
       />
@@ -192,7 +203,8 @@ buttonContainer: {
     marginBottom: 20,
     width: 200,
     borderRadius: 30,
-    marginLeft:90
+    marginLeft:90,
+    backgroundColor: 'yellow',
 },
 loginButton: {
 
