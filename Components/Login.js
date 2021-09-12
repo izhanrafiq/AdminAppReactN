@@ -21,8 +21,8 @@ export default class Login extends Component {
     headerTitle: 'Login',
   };
   state = {
-    email: 'admin',
-    password: 'admin',
+    email: '',
+    password: '',
   };
   sign = async (email, role) => {
     var token = await signIn(email, role)
@@ -42,7 +42,7 @@ export default class Login extends Component {
 
         this.sign(emp.email, "admin")
         console.log("sign in")    //GETTING TOKEN
-        this.props.navigation.navigate('Salary');
+        this.props.navigation.navigate('Nav', { index: "emp" });
       }
       else {
         alert('User is not admin');
@@ -68,10 +68,10 @@ export default class Login extends Component {
     if (this.state.email == this.state.password) {
 
       // this.props.navigation.navigate('Leaves');
-      this.props.navigation.navigate('Nav', {index:"emp"});
-    //   NativeModules.Device.getDeviceName((err, name) => {
-    //     console.log(err, name);
-    //   });
+      this.props.navigation.navigate('Nav', { index: "emp" });
+      //   NativeModules.Device.getDeviceName((err, name) => {
+      //     console.log(err, name);
+      //   });
       this.setState({
         email: '',
         password: '',

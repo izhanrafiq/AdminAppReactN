@@ -62,7 +62,7 @@ function App() {
               backgroundColor: 'purple',
             },
             headerTintColor: 'white',
-            headerShown:false,
+            headerShown: false,
           }}
           name="Employee"
           component={EmployeeApp}
@@ -77,7 +77,7 @@ function App() {
           name="EditEmployee"
           component={EditEmployee}
         />
-      <Stack.Screen
+        <Stack.Screen
           options={{
             headerStyle: {
               backgroundColor: 'purple',
@@ -88,7 +88,7 @@ function App() {
           name="Nav"
           component={Nav}
         />
-      <Stack.Screen
+        <Stack.Screen
           options={{
             headerStyle: {
               backgroundColor: 'purple',
@@ -107,7 +107,7 @@ function App() {
           }}
           name="AddAttendance"
           component={AddAttendance}
-        />            
+        />
         <Stack.Screen
           options={{
             headerStyle: {
@@ -165,7 +165,7 @@ function App() {
             },
             headerTintColor: 'white',
           }}
-          name="Leaves"
+          name="LeavePage"
           component={Leaves}
         />
         <Stack.Screen

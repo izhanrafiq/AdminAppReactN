@@ -24,7 +24,7 @@ const SalarySlip = (props) => {
     var month = { '1': 'Jan', '2': 'Feb', '3': 'Mar', '4': 'Apr', '5': 'May', '6': 'Jun', '7': 'Jul', '8': 'Aug', '9': 'Sep', '10': 'Oct', '11': 'Nov', '12': 'Dec' }
 
     loadEmpSalary = async (id, monthYear) => {
-        let list = await getSalaryByEmployeeIdmonthYear("1", "Feb 2021");
+        let list = await getSalaryByEmployeeIdmonthYear(id, monthYear);
         console.log('list is', list)
         setEmpsalary(list)
     }

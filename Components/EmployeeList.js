@@ -1,81 +1,101 @@
 import React, { useEffect, useState } from "react";
-import { Image,FlatList, SafeAreaView, StatusBar, Button,StyleSheet, Text, TouchableHighlight, TouchableOpacity, View } from "react-native";
-import { getEmployees,deleteEmployee,updateEmployee, getEmployeeById } from "../services/EmployeeData";
+import { Image, FlatList, SafeAreaView, StatusBar, Button, StyleSheet, Text, TouchableHighlight, TouchableOpacity, View } from "react-native";
+import { getEmployees, deleteEmployee, updateEmployee, getEmployeeById } from "../services/Employee-gql";
 import EditEmployee from "./EditEmployee";
 import { useNavigation } from "@react-navigation/core";
 
-const Item = ({ item, onPress, style, onDelete, onEdit, onSalary}) => (
+const Item = ({ item, onPress, style, onDelete, onEdit, onSalary, onLeave, onAttendence }) => (
   <TouchableOpacity onPress={onPress} style={[styles.item, style]}>
-      <View style={{
-        flex: 1,
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'stretch',
-      }}>
-        <View style={{flex:8, height: 40, flexDirection: 'row'}} >
-            <View style={{flex:7, height: 60}}>
-                <Text style={styles.title}>{item.name}</Text>
-            </View>
-
-            <View style={ {flex: 1}} >
-            <TouchableOpacity onPress={()=>{
-              onSalary(item.id);
-            }}>
-            <Image
-            style={styles.tinyLogo}
-            source={require('../public/images/empsalary.png')}
-          />
-          </TouchableOpacity>
-         </View>
-
-            <View style={ {flex: 1}} >
-            <TouchableOpacity onPress={()=>{
-              onEdit(item);
-            }}>
-            <Image
-            style={styles.tinyLogo}
-            source={require('../public/images/edit.png')}
-          />
-          </TouchableOpacity>
-         </View>
-
-            <View  style={{flex:1, height: 65}}>
-            <TouchableOpacity onPress={()=>{
-              onDelete(item.id);
-              }}>
-            <Image
-            style={styles.tinyLogo}
-            source={require('../public/images/delete.png')}
-          />
-          </TouchableOpacity>
-            </View>
-
+    <View style={{
+      flex: 1,
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'stretch',
+    }}>
+      <View style={{ flex: 8, height: 40, flexDirection: 'row' }} >
+        <View style={{ flex: 7, height: 60 }}>
+          <Text style={styles.title}>{item.name}</Text>
         </View>
-        <View style={{flex:2,  height: 30}} >
-            <Text style={styles.email}>{item.email}</Text>
-            {/* <Text style={styles.address}>{item.address}</Text>
-            <Text style={styles.dateOfBirth}>{item.dateOfBirth}</Text> */}
 
+        <View style={{ flex: 1 }} >
+          <TouchableOpacity onPress={() => {
+            onAttendence(item);
+          }}>
+            <Image
+              style={styles.tinyLogo}
+              source={require('../public/images/attendance.png')}
+            />
+          </TouchableOpacity>
         </View>
+
+        <View style={{ flex: 1 }} >
+          <TouchableOpacity onPress={() => {
+            onLeave(item);
+          }}>
+            <Image
+              style={styles.tinyLogo}
+              source={require('../public/images/Leave.png')}
+            />
+          </TouchableOpacity>
+        </View>
+
+        {/*  <View style={{ flex: 1 }} >
+          <TouchableOpacity onPress={() => {
+            onSalary(item);
+          }}>
+            <Image
+              style={styles.tinyLogo}
+              source={require('../public/images/empsalary.png')}
+            />
+          </TouchableOpacity>
+        </View>*/}
+
+        <View style={{ flex: 1 }} >
+          <TouchableOpacity onPress={() => {
+            onEdit(item);
+          }}>
+            <Image
+              style={styles.tinyLogo}
+              source={require('../public/images/edit.png')}
+            />
+          </TouchableOpacity>
+        </View>
+
+        <View style={{ flex: 1, height: 65 }}>
+          <TouchableOpacity onPress={() => {
+            onDelete(item.id);
+          }}>
+            <Image
+              style={styles.tinyLogo}
+              source={require('../public/images/delete.png')}
+            />
+          </TouchableOpacity>
+        </View>
+
       </View>
+      <View style={{ flex: 2, height: 58 }} >
+        <Text style={styles.email}>Email : {item.email}</Text>
+        <Text style={styles.address}>Address : {item.address}</Text>
+        <Text style={styles.dateOfBirth}>Assigned Role : {item.type}</Text>
+
+      </View>
+    </View>
   </TouchableOpacity>
 );
 
 const EmployeeApp = () => {
 
-  const navigation= useNavigation();
+  const navigation = useNavigation();
   const [selectedId, setSelectedId] = useState(null);
   const [count, doRender] = useState(0);
   const [employees, setEmployees] = useState([]);
   //  const [employees, setEmployees] = useState(getEmployees());
 
-  useEffect(()=>{
-      loadEmployee();
-  
-   
-  },[]);
+  useEffect(() => {
+    loadEmployee();
+  }, []);
 
-  loadEmployee = async() => {
+  loadEmployee = async () => {
     let list = await getEmployees();
     setEmployees(list);
   }
@@ -87,24 +107,30 @@ const EmployeeApp = () => {
       <Item
         item={item}
         onPress={() => setSelectedId(item.id)}
-        onDelete={(id)=>{
+        onDelete={(id) => {
           deleteEmployee(id);
           loadEmployee();
-          doRender(count+1);
+          doRender(count + 1);
         }}
 
-        onEdit={(employee)=>{
+        onEdit={(employee) => {
           console.log("Employee....to....edit...", employee);
           navigation.navigate('EditEmployee', employee);
           loadEmployee();
 
         }}
 
-        onSalary={(empId)=>{
-            //Implement Salary page.....
-            navigation.navigate('EmployeeSalary', (props = {employeeId:empId}));
-  
-          }}
+        onSalary={(employee) => {
+          //Implement Salary page.....
+          navigation.navigate('EmployeeSalary', employee);
+
+        }}
+        onLeave={(employee) => {
+          navigation.navigate('LeavePage', employee);
+        }}
+        onAttendence={(employee) => {
+          navigation.navigate('AttendencePage', employee);
+        }}
 
         style={{ backgroundColor }}
       />
@@ -122,7 +148,7 @@ const EmployeeApp = () => {
         extraData={selectedId}
       />
 
-    {/* <Button 
+      {/* <Button 
           title="Add Employee"
           onPress={()=>{
             //updateAsyncData();
@@ -130,14 +156,14 @@ const EmployeeApp = () => {
           }}
           ></Button>  */}
 
-        <TouchableHighlight style={[styles.buttonContainer, styles.loginButton]} onPress={()=>{
-            navigation.navigate('AddEmployee', { name: "" });
-          }}>
-              <Text style={styles.loginText}>Add Employee</Text>
-        </TouchableHighlight>
+      <TouchableHighlight style={[styles.buttonContainer, styles.loginButton]} onPress={() => {
+        navigation.navigate('AddEmployee', { name: "" });
+      }}>
+        <Text style={styles.loginText}>Add Employee</Text>
+      </TouchableHighlight>
     </SafeAreaView>
   );
-}; 
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -152,24 +178,24 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 32,
-    
+
   },
   email: {
     fontSize: 20,
-    
+
   },
-  address:{
-      fontSize: 20,
-      paddingBottom: 1
+  address: {
+    fontSize: 20,
+    paddingBottom: 1
   },
-  dateOfBirth:{
+  dateOfBirth: {
     fontSize: 15,
   },
   tinyLogo: {
     width: 30,
     height: 30,
   },
-buttonContainer: {
+  buttonContainer: {
     height: 45,
     flexDirection: 'row',
     justifyContent: 'center',
@@ -177,15 +203,15 @@ buttonContainer: {
     marginBottom: 20,
     width: 200,
     borderRadius: 30,
-    marginLeft:90,
+    marginLeft: 90,
     backgroundColor: 'yellow',
-},
-loginButton: {
+  },
+  loginButton: {
 
-},
-loginText: {
+  },
+  loginText: {
     color: 'black',
-}
+  }
 });
 
 export default EmployeeApp;

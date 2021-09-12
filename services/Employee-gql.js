@@ -179,7 +179,7 @@ export const updateEmployee = async (record) => {
         '",dateOfBirth:"' + record.dateOfBirth +
         '",dateOfJoining:"' + record.dateOfJoining +
         '",education:"' + record.education +
-        '",address:"' + record.address +
+
         '",type:"' + record.type +
         '",role:"' + record.role +
         '",password:"' + record.password +
@@ -538,7 +538,7 @@ export var addAttendace = async (record) => {
     console.log(record)
 
     const mutation = gql`mutation { addAttendance 
-      (employeeId:"`+ record.employeeId +
+        (employeeId:"`+ record.employeeId +
         `",email:"` + record.email +
         `",date:"` + record.date +
         `",inTimeDate:"` + record.inTimeDate +
@@ -549,12 +549,12 @@ export var addAttendace = async (record) => {
         headers: {
             authorization: useToken(),
         }
-    }).request(query)
+    }).request(mutation)
     return response;
 }
 export const updateAttendance = async (record) => {
     console.log("updateRecord:", record)
-    const mutation = gql`mutation { updateAttendance 
+    const query = gql`mutation { updateAttendance 
   (employeeId:"`+ record.employeeId +
         `",email:"` + record.email +
         `",date:"` + record.date +
@@ -572,7 +572,7 @@ export const updateAttendance = async (record) => {
 
 
 export var deleteAttendance = async function (id) {
-    const mutation = gql`
+    const query = gql`
     mutation{
         deleteAttendance(id:`+ id + `){
           id
