@@ -29,6 +29,8 @@
  import { getEmployees } from './services/EmployeeData';
  import { getSalary } from './services/SalaryData';
  import { getLeaves } from './services/LeavesData';
+import Attendance from './Components/Attendance';
+import AddAttendance from './Components/AddAttendance';
  
  
  function App() {
