@@ -10,7 +10,8 @@ import {
     Alert
 } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
-import { addLeaves } from '../../services/LeavesData';
+import { addLeaves } from '../../services/Leaves-gpl';
+// import { addLeaves } from '../../services/LeavesData';
 
 const AddLeave = (props) => {
     
@@ -20,8 +21,8 @@ const AddLeave = (props) => {
     const [year, onChangeYear] = React.useState('');
     const [startDate, onChangeStartDate] = React.useState('');
     const [endDate, onChangeEndDate] = React.useState('');
-    const [dateOfEntry, onChangeDateOfEntry] = React.useState('');
-    const [dateOfModify, onChangeDateOfModify] = React.useState('');
+    // const [dateOfEntry, onChangeDateOfEntry] = React.useState('');
+    // const [dateOfModify, onChangeDateOfModify] = React.useState('');
 
     const [value, onChangeText] = React.useState('9');
 
@@ -32,17 +33,28 @@ const AddLeave = (props) => {
     const setEmployeeId = props.route.params.setEmployeeId;
     console.log("in add leave :",setEmployeeId);
     
-    let addToLeaves = () => {
+    let addToLeaves = async() => {
         let employeeLeave={
-            id,employeeId:empId,count,year,startDate,endDate,dateOfEntry,dateOfModify
+            id,employeeId:empId,count,year,startDate,endDate
         };
-        employeeLeave.id= Date.now()+"S";
+        // employeeLeave.id= Date.now()+"S";
         console.log("Added ",employeeLeave);
-        addLeaves(employeeLeave);
+        await addLeaves(employeeLeave);
         setEmployeeId(empId)
         doFetch();
         props.navigation.navigate('EmployeeLeaves', {});
     }
+    // let addToLeaves = () => {
+    //     let employeeLeave={
+    //         id,employeeId:empId,count,year,startDate,endDate,dateOfEntry,dateOfModify
+    //     };
+    //     employeeLeave.id= Date.now()+"S";
+    //     console.log("Added ",employeeLeave);
+    //     addLeaves(employeeLeave);
+    //     setEmployeeId(empId)
+    //     doFetch();
+    //     props.navigation.navigate('EmployeeLeaves', {});
+    // }
 
         return (
             // <ScrollView>
@@ -87,7 +99,7 @@ const AddLeave = (props) => {
                         clearButtonMode="always"
                         onChangeText={onChangeEndDate} />
                 </View>
-                <View style={styles.inputContainer}>
+                {/* <View style={styles.inputContainer}>
                     <TextInput style={styles.inputs}
                         placeholder="dateOfEntry"
                         underlineColorAndroid='transparent'
@@ -102,7 +114,7 @@ const AddLeave = (props) => {
                         value={dateOfModify}
                         clearButtonMode="always"
                         onChangeText={onChangeDateOfModify} />
-                </View>
+                </View> */}
 
                 <View style={{backgroundColor:"blue",height:45,borderRadius:35,}}>
                 <TouchableHighlight style={[styles.buttonContainer, styles.loginButton]} onPress={() => addToLeaves()}>
