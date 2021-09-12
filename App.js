@@ -64,6 +64,26 @@ function App() {
           name="EditEmployee"
           component={EditEmployee}
         />
+      <Stack.Screen
+          options={{
+            headerStyle: {
+              backgroundColor: 'purple',
+            },
+            headerTintColor: 'white',
+          }}
+          name="AttendencePage"
+          component={Attendance}
+        />
+        <Stack.Screen
+          options={{
+            headerStyle: {
+              backgroundColor: 'purple',
+            },
+            headerTintColor: 'white',
+          }}
+          name="AddAttendance"
+          component={AddAttendance}
+        />            
         <Stack.Screen
           options={{
             headerStyle: {
