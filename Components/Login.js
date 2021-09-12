@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
   StyleSheet,
   Text,
@@ -7,10 +7,11 @@ import {
   Image,
   Alert,
 } from 'react-native';
-
-import {Button, TextInput, Appbar, Title} from 'react-native-paper';
-
-import {NativeModules} from 'react-native';
+import { TokenStore } from '../services/AsyncStorage';
+import { getEmployeeByEmail } from '../services/Employee-gql';
+import { Button, TextInput, Appbar, Title } from 'react-native-paper';
+import { signIn } from '../services/Employee-gql';
+import { NativeModules } from 'react-native';
 
 export default class Login extends Component {
   constructor(props) {
@@ -23,12 +24,49 @@ export default class Login extends Component {
     email: 'admin',
     password: 'admin',
   };
+  sign = async (email, role) => {
+    var token = await signIn(email, role)
+    console.log("token normal", JSON.stringify(token.signIn[0].id))
+    TokenStore(JSON.stringify(token.signIn[0].id));
+  }
+  func = (emp, role) => {
+
+    if (emp !== undefined) {
+      console.log("enter")
+      console.log(emp)
+      console.log("role:", role)
+      console.log("employee.role:", emp.role)
+      console.log("name:", emp.name)
+      console.log("password:", this.state.password)
+      if (role === "admin" && role === emp.role) {
+
+        this.sign(emp.email, "admin")
+        console.log("sign in")    //GETTING TOKEN
+        this.props.navigation.navigate('Salary');
+      }
+      else {
+        alert('User is not admin');
+      }
+    }
+  }
+  funct = async (username, role) => {                               //NOT REQUIRED
+    console.log("here comes our emaillll", username)
+    let employee1 = await getEmployeeByEmail(username)
+    console.log('our employe is', employee1)
+    let emp = employee1[0]
+    if (emp !== []) {
+      console.log("emp:   ", emp)
+      this.func(emp, role)
+    }
+
+  }
 
   onLoginButton = () => {
     console.log(
       '>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> on login button',
     );
     if (this.state.email == this.state.password) {
+
       // this.props.navigation.navigate('Leaves');
       this.props.navigation.navigate('Nav', {index:"emp"});
     //   NativeModules.Device.getDeviceName((err, name) => {
@@ -55,9 +93,9 @@ export default class Login extends Component {
     return (
       <View style={styles.container}>
         <Image
-        style={{backgroundColor:"blue" ,height:50,width:50,marginTop:10,marginBottom:10}}
-              source={require('../public/images/admin.png')}
-            />
+          style={{ backgroundColor: "blue", height: 50, width: 50, marginTop: 10, marginBottom: 10 }}
+          source={require('../public/images/admin.png')}
+        />
         <Title style={styles.title}>Admin Login</Title>
         {/* <View style={styles.inputContainer}>
                     <Image style={styles.inputIcon}
@@ -114,8 +152,9 @@ export default class Login extends Component {
               placeholder="Username"
               keyboardType="email-address"
               underlineColorAndroid="transparent"
+              autoCapitalize='none'
               value={this.state.email}
-              onChangeText={email => this.setState({email})}
+              onChangeText={email => this.setState({ email })}
             />
           </View>
           <View
@@ -140,7 +179,7 @@ export default class Login extends Component {
               secureTextEntry={true}
               underlineColorAndroid="transparent"
               value={this.state.password}
-              onChangeText={password => this.setState({password})}
+              onChangeText={password => this.setState({ password })}
             />
           </View>
         </View>
@@ -149,7 +188,7 @@ export default class Login extends Component {
             color="purple"
             icon={require('../public/images/login.png')}
             mode="contained"
-            onPress={() => this.onLoginButton()}>
+            onPress={() => { this.funct(this.state.email, "admin") }}>
             Login
           </Button>
         </View>
@@ -173,7 +212,7 @@ const styles = StyleSheet.create({
     // alignItems: 'center'
   },
   container: {
-    flex:1,
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'rgb(174, 135, 196)',
@@ -208,7 +247,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 20,
-    width:"80%",
+    width: "80%",
     borderRadius: 30,
     // marginLeft: 50,
   },
