@@ -19,6 +19,17 @@ const Item = ({ item, onPress, style, onDelete, onEdit, onSalary}) => (
 
             <View style={ {flex: 1}} >
             <TouchableOpacity onPress={()=>{
+              onAttendence(item);
+            }}>
+            <Image
+            style={styles.tinyLogo}
+            source={require('../public/images/attendance.png')}
+          />
+          </TouchableOpacity>
+         </View>
+                    
+            <View style={ {flex: 1}} >
+            <TouchableOpacity onPress={()=>{
               onSalary(item.id);
             }}>
             <Image
@@ -105,8 +116,10 @@ const EmployeeApp = ({navigation}) => {
             let empSalaryList = getSalaryListForEmp(empId);
             console.log("from employeelist :",empSalaryList)
             navigation.navigate('EmployeeSalary',props={empSalaryList});
-  
           }}
+   onAttendence={(employee)=>{
+          navigation.navigate('AttendencePage',employee);
+        }}
 
         style={{ backgroundColor }}
       />
