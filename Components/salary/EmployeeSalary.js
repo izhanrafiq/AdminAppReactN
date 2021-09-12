@@ -176,7 +176,8 @@ const EmployeeSalary = props => {
         }}
         navigatepayslip={() => {
 
-          nav.navigate('SalarySlip', { id: item.id })
+          console.log('item is', item)
+          nav.navigate('SalarySlip', { id: item.employeeId, monthYear: item.monthYear })
         }
         }
         style={{ backgroundColor }}

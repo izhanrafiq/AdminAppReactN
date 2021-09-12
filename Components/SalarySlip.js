@@ -10,19 +10,22 @@ import RNHTMLtoPDF from 'react-native-html-to-pdf';
 import RNPrint from 'react-native-print';
 import FileViewer from 'react-native-file-viewer';
 import { getSalaryById } from '../services/SalaryData';
-import { getEmployeeById, getSalaryByEmployeeId } from '../services/Employee-gql';
+import { getEmployeeById, getSalaryByEmployeeId, getSalaryByEmployeeIdmonthYear } from '../services/Employee-gql';
 
 import { useNavigation } from '@react-navigation/native';
 
 
 
 
-const SalarySlip = ({ navigation }) => {
+const SalarySlip = (props) => {
     const [empsalary, setEmpsalary] = useState([]);
     const [empname, setEmpname] = useState([]);
     const nav = useNavigation()
-    loadEmpSalary = async (id) => {
-        let list = await getSalaryByEmployeeId(id);
+    var month = { '1': 'Jan', '2': 'Feb', '3': 'Mar', '4': 'Apr', '5': 'May', '6': 'Jun', '7': 'Jul', '8': 'Aug', '9': 'Sep', '10': 'Oct', '11': 'Nov', '12': 'Dec' }
+
+    loadEmpSalary = async (id, monthYear) => {
+        let list = await getSalaryByEmployeeIdmonthYear("1", "Feb 2021");
+        console.log('list is', list)
         setEmpsalary(list)
     }
     loadEmpName = async (id) => {
@@ -30,14 +33,15 @@ const SalarySlip = ({ navigation }) => {
         setEmpname(ename)
     }
     useEffect(() => {
-        const unsubscribe = navigation.addListener('focus', () => {
-            console.log("props", props.employeeId)
-            const id = props.employeeId
-            loadEmpSalary(id);
-            loadEmpName(id);
-        });
-        return unsubscribe;
-    }, [navigation]);
+
+        console.log("props", props)
+        const id = props.route.params.id
+        const monthYear = props.route.params.monthYear
+        console.log('monthyear is', monthYear)
+        loadEmpSalary(id, monthYear);
+        loadEmpName(id);
+    }, []);
+
 
 
 

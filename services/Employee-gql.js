@@ -201,7 +201,31 @@ export var getSalaryByEmployeeId = async function (employeeId) {
     return response.salaries;
 
 }
+export var getSalaryByEmployeeIdmonthYear = async function (employeeId, monthYear) {
+    console.log('MONTH ', monthYear)
+    const query = gql
+        `{
+      salaries(employeeId:`+ employeeId + `,monthYear:"` + monthYear + `"){
+           employeeId,
+           monthYear,
+           basic,
+           hra,
+           lta,
+           variable,
+           bonus,
+           TDS,
+           tax,
+           total,
+           workingDaysInMonth
+       
+       
+         }}
+  `
+    let response = await graphQLClient.request(query)
+    console.log(JSON.stringify(response, undefined, 2))
+    return response.salaries;
 
+}
 export var getSalaryByMonthYear = async function (monthYear) {
     const query = gql
         `{
