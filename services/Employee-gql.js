@@ -2,10 +2,25 @@
 import { gql, request, GraphQLClient } from 'graphql-request'
 
 const endpoint = 'http://localhost:4000/graphql'
+import { useToken } from './AsyncStorage'
 
+export var signIn = async function (email, password) {
+    const query = gql`
+    {
+      signIn(email:"`+ email + `",password:"` + password + `"){
+        id
+      }
+    }
+  `
+    let response = await graphQLClient.request(query)
+    //console.log(JSON.stringify(response, undefined, 2))
+    console.log(response.id);
+    return response;
+
+}
 const graphQLClient = new GraphQLClient(endpoint, {
     headers: {
-        authorization: 'Bearer MY_TOKEN',
+        authorization: useToken(),
     },
 })
 
@@ -43,7 +58,12 @@ export var getEmployees = async function () {
          }
     }
   `
-    let response = await graphQLClient.request(query)
+    let response = await new GraphQLClient(endpoint, {
+        headers: {
+            authorization: useToken(),
+        }
+    }).request(query)
+
     console.log(JSON.stringify(response, undefined, 2))
     return response.employee;
 
@@ -59,7 +79,12 @@ export var getEmployee = async function () {
          }
     }
   `
-    let response = await graphQLClient.request(query)
+    let response = await new GraphQLClient(endpoint, {
+        headers: {
+            authorization: useToken(),
+        }
+    }).request(query)
+
     console.log(JSON.stringify(response, undefined, 2))
     return response.employee;
 
@@ -68,7 +93,7 @@ export var getEmployee = async function () {
 export var getEmployeeByEmail = async function (email) {
     const query = gql`
     {
-      employee(email:`+ email + `){
+      employee(email:"`+ email + `"){
         id,
         name,
         email,
@@ -81,7 +106,12 @@ export var getEmployeeByEmail = async function (email) {
          }
     }
   `
-    let response = await graphQLClient.request(query)
+    let response = await new GraphQLClient(endpoint, {
+        headers: {
+            authorization: useToken(),
+        }
+    }).request(query)
+
     console.log(JSON.stringify(response, undefined, 2))
     return response.employee;
 
@@ -96,7 +126,12 @@ export var getEmployeeById = async function (id) {
          }
     }
   `
-    let response = await graphQLClient.request(query)
+    let response = await new GraphQLClient(endpoint, {
+        headers: {
+            authorization: useToken(),
+        }
+    }).request(query)
+
     console.log(JSON.stringify(response, undefined, 2))
     return response.employee;
 
@@ -114,7 +149,12 @@ export const addEmployee = async (record) => {
         '",type:"' + record.type +
         '",role:"' + record.role +
         '",password:"' + record.password + '"){id}}';
-    const response = await graphQLClient.request(query);
+    let response = await new GraphQLClient(endpoint, {
+        headers: {
+            authorization: useToken(),
+        }
+    }).request(query)
+
     return response;
 }
 
@@ -144,7 +184,12 @@ export const updateEmployee = async (record) => {
         '",role:"' + record.role +
         '",password:"' + record.password +
         '"){id}}';
-    const response = await graphQLClient.request(query);
+    let response = await new GraphQLClient(endpoint, {
+        headers: {
+            authorization: useToken(),
+        }
+    }).request(query)
+
     console.log(response);
     return response;
 }
@@ -171,16 +216,21 @@ export var getSalary = async function () {
        
          }}
   `
-    let response = await graphQLClient.request(query)
+    let response = await new GraphQLClient(endpoint, {
+        headers: {
+            authorization: useToken(),
+        }
+    }).request(query)
+
     console.log(JSON.stringify(response, undefined, 2))
     return response.salaries;
 
 }
-
-export var getSalaryByEmployeeId = async function (employeeId) {
+export var getSalaryById = async function (id) {
     const query = gql
         `{
-      salaries(employeeId:`+ employeeId + `){
+      salaries(id:`+ id + `){
+          id,
            employeeId,
            monthYear,
            basic,
@@ -196,7 +246,41 @@ export var getSalaryByEmployeeId = async function (employeeId) {
        
          }}
   `
-    let response = await graphQLClient.request(query)
+    let response = await new GraphQLClient(endpoint, {
+        headers: {
+            authorization: useToken(),
+        }
+    }).request(query)
+
+    console.log(JSON.stringify(response, undefined, 2))
+    return response.salaries;
+
+}
+export var getSalaryByEmployeeId = async function (employeeId) {
+    const query = gql
+        `{
+      salaries(employeeId:`+ employeeId + `){id,
+           employeeId,
+           monthYear,
+           basic,
+           hra,
+           lta,
+           variable,
+           bonus,
+           TDS,
+           tax,
+           total,
+           workingDaysInMonth
+       
+       
+         }}
+  `
+    let response = await new GraphQLClient(endpoint, {
+        headers: {
+            authorization: useToken(),
+        }
+    }).request(query)
+
     console.log(JSON.stringify(response, undefined, 2))
     return response.salaries;
 
@@ -221,7 +305,11 @@ export var getSalaryByEmployeeIdmonthYear = async function (employeeId, monthYea
        
          }}
   `
-    let response = await graphQLClient.request(query)
+    let response = await new GraphQLClient(endpoint, {
+        headers: {
+            authorization: useToken(),
+        }
+    }).request(query)
     console.log(JSON.stringify(response, undefined, 2))
     return response.salaries;
 
@@ -234,14 +322,22 @@ export var getSalaryByMonthYear = async function (monthYear) {
            total
          }}
   `
-    let response = await graphQLClient.request(query)
+    let response = await new GraphQLClient(endpoint, {
+        headers: {
+            authorization: useToken(),
+        }
+    }).request(query)
     const query2 = gql
         `{
     employee(employeeId:`+ response.salaries.employeeId + `{
         name
        }}
 `
-    let response2 = await graphQLClient.request(query2)
+    let response2 = await new GraphQLClient(endpoint, {
+        headers: {
+            authorization: useToken(),
+        }
+    }).request(query)
     response.salaries.name = response2.employee.name
     console.log(JSON.stringify(response, undefined, 2))
     return response.salaries;
@@ -250,17 +346,24 @@ export var getSalaryByMonthYear = async function (monthYear) {
 
 
 export const addSalary = async (record) => {
+
+    const total = record.basic + record.hra + record.lta + record.variable + record.bonus + record.TDS - record.tax
+
     const query = 'mutation { addSalary(employeeId:"' + record.employeeId +
         '",monthYear:"' + record.monthYear +
-        '",basic:"' + record.basic +
-        '",hra:"' + record.hra +
-        '",lta:"' + record.lta +
-        '",variable:"' + record.variable +
-        '",bonus:"' + record.bonus +
-        '",TDS:"' + record.TDS +
-        '",tax:"' + record.tax +
-        '",workingDaysInMonth:"' + record.workingDaysInMonth + '"){id}}';
-    const response = await graphQLClient.request(query);
+        '",basic:' + record.basic +
+        ',hra:' + record.hra +
+        ',lta:' + record.lta +
+        ',variable:' + record.variable +
+        ',bonus:' + record.bonus +
+        ',TDS:' + record.TDS +
+        ',tax:' + record.tax +
+        ',workingDaysInMonth:' + record.workingDaysInMonth + ',total:' + total + '){id}}';
+    let response = await new GraphQLClient(endpoint, {
+        headers: {
+            authorization: useToken(),
+        }
+    }).request(query)
     return response;
 }
 
@@ -269,23 +372,32 @@ export const deleteSalary = async (id) => {
         'id:"' + id +
         '"){id}}';
     console.log("query::", query);
-    const response = await graphQLClient.request(query);
+    let response = await new GraphQLClient(endpoint, {
+        headers: {
+            authorization: useToken(),
+        }
+    }).request(query)
     return response;
 }
 
 export const updateSalary = async (record) => {
+    const total = record.basic + record.hra + record.lta + record.variable + record.bonus + record.TDS - record.tax
     console.log("updateRecord:", record)
     const query = 'mutation { updateSalary(employeeId:"' + record.employeeId +
         '",monthYear:"' + record.monthYear +
-        '",basic:"' + record.basic +
-        '",hra:"' + record.hra +
-        '",lta:"' + record.lta +
-        '",variable:"' + record.variable +
-        '",bonus:"' + record.bonus +
-        '",TDS:"' + record.TDS +
-        '",tax:"' + record.tax +
-        '",workingDaysInMonth:"' + record.workingDaysInMonth + '"){id}}';
-    const response = await graphQLClient.request(query);
+        '",basic:' + record.basic +
+        ',hra:' + record.hra +
+        ',lta:' + record.lta +
+        ',variable:' + record.variable +
+        ',bonus:' + record.bonus +
+        ',TDS:' + record.TDS +
+        ',tax:' + record.tax +
+        ',workingDaysInMonth:' + record.workingDaysInMonth + ',total:' + total + '){id}}';
+    let response = await new GraphQLClient(endpoint, {
+        headers: {
+            authorization: useToken(),
+        }
+    }).request(query)
     console.log(response);
     return response;
 }
@@ -297,14 +409,22 @@ export const updateSalary = async (record) => {
 export var getLeaves = async function () {
 
     const query = '{ leaves{id,employeeId,startDate,endDate,count,year,dateOfEntry,dateOfModify}}';
-    const response = await client.request(query);
+    let response = await new GraphQLClient(endpoint, {
+        headers: {
+            authorization: useToken(),
+        }
+    }).request(query)
     return response.leaves;
 }
 
 export var getLeavesByEmployeeId = async function (employeeId) {
 
     const query = '{ leaves(employeeId:' + employeeId + '){id,employeeId,startDate,endDate,count,year,dateOfEntry,dateOfModify}}';
-    const response = await client.request(query);
+    let response = await new GraphQLClient(endpoint, {
+        headers: {
+            authorization: useToken(),
+        }
+    }).request(query)
     return response.leaves;
 }
 
@@ -314,10 +434,14 @@ export var addLeaves = async function (record) {
 
     const query = 'mutation{ addLeave(employeeId:' + record.employeeId +
         ',startDate:' + record.startDate + ',endDate:' + record.endDate +
-        ',count:' + record.count + ',year:' + record.year + '){id}}'
+        ',count:' + record.count + ',year:"' + record.year + '"){id}}'
 
     console.log("query:" + query);
-    const response = await client.request(query);
+    let response = await new GraphQLClient(endpoint, {
+        headers: {
+            authorization: useToken(),
+        }
+    }).request(query)
     console.log("response:", response);
     return response;
 
@@ -328,7 +452,11 @@ export var deleteLeaves = async function (id) {
 
     console.log(id)
     const query = 'mutation { deleteLeave(id:' + id + "){id}}"
-    const response = await client.request(query);
+    let response = await new GraphQLClient(endpoint, {
+        headers: {
+            authorization: useToken(),
+        }
+    }).request(query)
     console.log("response:", response);
     return response;
 }
@@ -338,10 +466,14 @@ export var updateLeaves = async function (record) {
 
     const query = 'mutation{ updateLeave(id:' + record.id + ',employeeId:' + record.employeeId +
         ',startDate:' + record.startDate + ',endDate:' + record.endDate +
-        ',count:' + record.count + ',year:' + record.year + '){id}}'
+        ',count:' + record.count + ',year:"' + record.year + '"){id}}'
 
     console.log("query:" + query);
-    const response = await client.request(query);
+    let response = await new GraphQLClient(endpoint, {
+        headers: {
+            authorization: useToken(),
+        }
+    }).request(query)
     console.log("response:", response);
     return response;
 
@@ -368,7 +500,11 @@ export var getAttendance = async function () {
     }
   }
 `
-    let response = await graphQLClient.request(query)
+    let response = await new GraphQLClient(endpoint, {
+        headers: {
+            authorization: useToken(),
+        }
+    }).request(query)
     console.log(JSON.stringify(response, undefined, 2))
     return response.attendances;
 
@@ -387,7 +523,11 @@ export var getAttendanceByEmployeeId = async function (employeeId) {
     }
   }
 `
-    let response = await graphQLClient.request(query)
+    let response = await new GraphQLClient(endpoint, {
+        headers: {
+            authorization: useToken(),
+        }
+    }).request(query)
     console.log(JSON.stringify(response, undefined, 2))
     return response.attendances;
 
@@ -403,9 +543,13 @@ export var addAttendace = async (record) => {
         `",date:"` + record.date +
         `",inTimeDate:"` + record.inTimeDate +
         `",outTime:"` + record.outTime +
-        `",totalHours:"` + record.totalHours +
-        `"){id}}"`;
-    const response = await GraphQLClient.request(mutation);
+        `",totalHours:` + record.totalHours +
+        `){id}}"`;
+    let response = await new GraphQLClient(endpoint, {
+        headers: {
+            authorization: useToken(),
+        }
+    }).request(query)
     return response;
 }
 export const updateAttendance = async (record) => {
@@ -416,9 +560,13 @@ export const updateAttendance = async (record) => {
         `",date:"` + record.date +
         `",inTimeDate:"` + record.inTimeDate +
         `",outTime:"` + record.outTime +
-        `",totalHours:"` + record.totalHours +
-        `"){id}}"`;
-    const response = await graphQLClient.request(mutation);
+        `",totalHours:` + record.totalHours +
+        `){id}}"`;
+    let response = await new GraphQLClient(endpoint, {
+        headers: {
+            authorization: useToken(),
+        }
+    }).request(query)
     return response;
 }
 
@@ -432,7 +580,11 @@ export var deleteAttendance = async function (id) {
       }
   `
 
-    let response = await graphQLClient.request(mutation)
+    let response = await new GraphQLClient(endpoint, {
+        headers: {
+            authorization: useToken(),
+        }
+    }).request(query)
     console.log("deleted")
 
 }
