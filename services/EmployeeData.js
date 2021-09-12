@@ -105,7 +105,7 @@ export const updateEmployee = (data) => {
         }
 }
 
-export const deleteEmployee = ({id}) => {
+export const deleteEmployee = (id) => {
     employees = employees.filter((item)=>{return item.id!==id});
 }
 

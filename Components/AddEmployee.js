@@ -36,7 +36,7 @@ const AddEmployee = (props) => {
         employee.id= Date.now()+"S";
         console.log("Added ",employee);
         await addEmployee(employee);
-        props.navigation.navigate('EmployeeList', {});
+        props.navigation.navigate('Nav', {index:"emp"});
     }
 
         return (
