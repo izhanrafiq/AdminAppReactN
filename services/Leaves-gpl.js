@@ -7,12 +7,13 @@
 // ]
 
 import { gql, request, GraphQLClient } from 'graphql-request'
+import { useToken } from './AsyncStorage';
 
 const endpoint = 'http://localhost:4000/graphql'
 
 const graphQLClient = new GraphQLClient(endpoint, {
     headers: {
-        authorization: 'Bearer MY_TOKEN',
+        authorization: useToken(),
     },
 })
 
