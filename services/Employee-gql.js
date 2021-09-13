@@ -533,18 +533,18 @@ export var getAttendanceByEmployeeId = async function (employeeId) {
 
 }
 
-
 export var addAttendance = async (record) => {
     console.log(record)
 
     const mutation = gql`mutation { addAttendance 
         (employeeId:"`+ record.employeeId +
-        `",email:"` + record.email +
         `",date:"` + record.date +
         `",inTimeDate:"` + record.inTimeDate +
         `",outTime:"` + record.outTime +
         `",totalHours:` + record.totalHours +
-        `){id}}"`;
+        `){id}}`;
+  //  console.log("&&&",mutation);
+   // console.log("&&&&");
     let response = await new GraphQLClient(endpoint, {
         headers: {
             authorization: useToken(),
@@ -552,6 +552,7 @@ export var addAttendance = async (record) => {
     }).request(mutation)
     return response;
 }
+
 export const updateAttendance = async (record) => {
     console.log("updateRecord:", record)
     const query = gql`mutation { updateAttendance 
