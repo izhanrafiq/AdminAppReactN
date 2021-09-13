@@ -534,7 +534,7 @@ export var getAttendanceByEmployeeId = async function (employeeId) {
 }
 
 
-export var addAttendace = async (record) => {
+export var addAttendance = async (record) => {
     console.log(record)
 
     const mutation = gql`mutation { addAttendance 
